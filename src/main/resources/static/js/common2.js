@@ -6,6 +6,8 @@
 window.addEventListener("load", (e) => {
 
 	const map = document.querySelector("#map");
+	const data = document.querySelector("#data");
+	const map_data_rows = data.querySelectorAll(".map_data_row");
 	const button_A = document.querySelector("#A");
 	const button_B = document.querySelector("#B");
 	const button_C = document.querySelector("#C");
@@ -16,13 +18,9 @@ window.addEventListener("load", (e) => {
 	const right = document.querySelector("#right");
 	let row_Size = 15;
 	let column_Size = 15;
-	let map_rows = document.querySelectorAll(".map_row");
-	// let tiles = document.images;
-	// let clicked = false;
 	let mode = "○";
 	let mouse_X = e.clientX;;
 	let mouse_Y = e.clientY;
-
 
 	const map_Up = () => {
 		up.classList.add("click_button");
@@ -65,6 +63,57 @@ window.addEventListener("load", (e) => {
 		left.classList.remove("click_button");
 		right.classList.remove("click_button");
 	}
+
+	const field = (piece_Number) => {
+	switch (Number(piece_Number)) {
+		case 0: return {image_Name:"砂", roll:1}; // 道
+		case 1: return {image_Name:"草", roll:2}; // 魔物出現率アップ
+		case 2: return {image_Name:"山", roll:0}; // 障害物
+		case 3: return {image_Name:"海", roll:0}; // 障害物
+		case 4: return {image_Name:"洞窟", roll:4}; // 洞窟
+		case 5: return {image_Name:"城", roll:4}; // 村
+		case 6: return {image_Name:"山", roll:2}; // 通れる山
+		case 7: return {image_Name:"砂", roll:0}; // 通れない道
+		case 8: return {image_Name:"城", roll:4}; // 神殿
+		case 9: return {image_Name:"城", roll:4}; // 城
+		default: return {image_Name:"闇", roll:0}; // 通れない道
+	}
+}
+
+	const	map_Piece = (map_Number, piece_Number) => {
+		switch (map_Number) {
+			case 0: // フィールドA
+				return field(piece_Number);
+			case 1: // 城A 1階
+				return castle1(piece_Number);
+			case 2: // 洞窟1
+				return dungeon(piece_Number);
+			case 3: // 城A 2階
+				return castle2(piece_Number);
+			default: // その他
+				return field(piece_Number);
+		}
+	}
+
+	const draw_Map = () => {
+		// map の子要素を全部消去
+		while (map.firstChild) {
+			map.removeChild(map.firstChild);
+		}
+		// 新しいmap の子要素を作成
+		map_data_rows.forEach(map_data_row => {
+			const piece_Numbers = map_data_row.querySelectorAll(".piece_number");
+			const map_row = document.createElement('div');
+			map_row.id = 'map_row';
+			piece_Numbers.forEach(piece_Number => {
+				const map_Image_Name = map_Piece(0, piece_Number.innerText).image_Name;
+				const map_Image = data.querySelector("." + map_Image_Name);
+				const clone_Map_Image = map_Image.cloneNode();
+				map_row.appendChild(clone_Map_Image);
+			});
+			map.appendChild(map_row);
+		});
+	};
 	
 	const action = (mode) => {
 		map_rows = document.querySelectorAll(".map_row");
@@ -73,6 +122,7 @@ window.addEventListener("load", (e) => {
 		if (mode === "左") map_Left();
 		if (mode === "右") map_right();
 		if (mode === "○") map_stop();
+		draw_Map();
 	};
 
 	const map_View_Range = (row_Size, column_Size) => {
@@ -211,6 +261,8 @@ window.addEventListener("load", (e) => {
 			case "ArrowRight": move("右"); break;
 		};
 	});
+
+	draw_Map();
 
 	// if (mode === ""){
 	// 	walk();

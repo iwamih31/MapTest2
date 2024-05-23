@@ -327,11 +327,15 @@ nav button,
 #command,
 .member {
 	border: solid white medium;
-margin-top: 1rem;
+	margin-top: 1rem;
 }
 
 #information,
 #center_container,
 #command {
 	width: 33%;
+}
+
+.display_none{
+	display: none;
 }

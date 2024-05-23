@@ -75,17 +75,10 @@ public class MapTestController {
 
 	@GetMapping("/Start2")
 	public String start2(
-			RedirectAttributes redirectAttributes) {
-		int[] map_X_Y = service.piece_Position("フィールドA 城A");
-		String center_Image = service.center_Image;
-		int map_Number = map_X_Y[0];
-		int x = map_X_Y[1];
-		int y = map_X_Y[2];
-		String[][] map_Image = service.map_Image(map_Number, x, y);
-		redirectAttributes.addFlashAttribute("map_Image", map_Image);
-		redirectAttributes.addFlashAttribute("center_Image", center_Image);
-		redirectAttributes.addFlashAttribute("x", x);
-		redirectAttributes.addFlashAttribute("y", y);
+			RedirectAttributes redirectAttributes
+			) {
+		redirectAttributes.addFlashAttribute(
+			"piece_Name", "フィールドA 城A");
 		return redirect("/Map2");
 	}
 
@@ -117,15 +110,21 @@ public class MapTestController {
 
 	@GetMapping("/Map2")
 	public String map2(
-			@ModelAttribute("map_Image") String[][] map_Image,
-			@ModelAttribute("center_Image") String[][] center_Image,
-			@ModelAttribute("x") int x,
-			@ModelAttribute("y") int y,
+			@ModelAttribute("piece_Name") String piece_Name,
 			Model model) {
+				int[] map_X_Y = service.piece_Position(piece_Name);
+				int map_Number = map_X_Y[0];
+				int x = map_X_Y[1];
+				int y = map_X_Y[2];
+				int[][] map = service.getOriginalMap(map_Number);
+				String center_Image = service.center_Image;
+		String[] map_Image_Names = service.map_Image_Names();
 		add_View_Data_(model, "map2");
-		model.addAttribute("image_Names", service.map_Image_Names());
+		model.addAttribute("map", map);
 		model.addAttribute("x", x);
 		model.addAttribute("y", y);
+		model.addAttribute("center_Image", center_Image);
+		model.addAttribute("map_Image_Names", map_Image_Names);
 		return "view";
 	}
 

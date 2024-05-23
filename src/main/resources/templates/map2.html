@@ -37,16 +37,6 @@
 			</div>
 			<div id="center_panel" class="relative">
 				<div id="map">
-					<th:block th:each="image_Name : ${image_Names}">
-						<img th:id="${image_Name}" th:src="@{'/image_map/' + ${image_Name} + '.png'}">
-					</th:block>
-					<th:block th:each="row : ${map_Image}">
-						<div class="map_row">
-							<th:block th:each="image_Name : ${row}">
-								<img class="map_piece" th:src="@{'/image_map/' + ${image_Name} + '.png'}">
-							</th:block>
-						</div>
-					</th:block>
 				</div>
 				<img class="center_piece" th:src="@{'/image_map/' + ${center_Image} + '.png'}">
 			</div>
@@ -78,6 +68,20 @@
 		</div>
 		<div id="command">
 			　　　コマンド　　　
+		</div>
+		<div id="data" class="display_none">
+			<th:block th:each="image_Name : ${map_Image_Names}">
+				<img th:class="${image_Name}" th:src="@{'/image_map/' + ${image_Name} + '.png'}">
+			</th:block>
+			<table id="map_data_table">
+				<th:block th:each="row : ${map}">
+					<tr class="map_data_row">
+						<th:block th:each="piece_number : ${row}">
+							<td class="piece_number" th:value="${piece_number}">[[${piece_number}]]</td>
+						</th:block>
+					</tr>
+				</th:block>
+			</table>
 		</div>
 	</div>
 
