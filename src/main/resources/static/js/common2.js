@@ -286,8 +286,8 @@ return newNum;
 				if (current_Mode !== mode) {
 					clearInterval(loop);
 				}
-			}, 1000);
-		}, 2000);
+			}, 1200);
+		}, 1200);
 	}
 
 	// map.addEventListener("pointermove", (e) => {
