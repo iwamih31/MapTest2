@@ -22,8 +22,8 @@ window.addEventListener("load", (e) => {
 	let row_Size = 15;
 	let column_Size = 15;
 	let mode = "○";
-	let mouse_X = e.clientX;;
-	let mouse_Y = e.clientY;
+	// let mouse_X = e.clientX;
+	// let mouse_Y = e.clientY;
 	let x = Number(data.querySelector("#x").textContent);
 	let y = Number(data.querySelector("#y").textContent);
 
@@ -224,7 +224,7 @@ return newNum;
 				case "D":
 				case "○":
 				alert(button_Name + "ボタンが押されました");
-				alert_Position(event_Data);
+				// alert_Position(event_Data);
 				break;
 			case "上":
 			case "下":
@@ -234,10 +234,9 @@ return newNum;
 				break;
 			default:
 				break;
-			
 		}
 		console.log(button_Name + "ボタンが押されました");
-		console.log(position(event_Data));
+		// console.log(position(event_Data));
 	}
 
 	const move = (destination) => {
@@ -271,23 +270,23 @@ return newNum;
 	down.addEventListener("mouseover", (e) => { button("下", e); });
 	left.addEventListener("mouseover", (e) => { button("左", e); });
 	right.addEventListener("mouseover", (e) => { button("右", e); });
+	up.addEventListener("mouseout", () => { move("○"); });
+	down.addEventListener("mouseout", () => { move("○"); });
+	left.addEventListener("mouseout", () => { move("○"); });
+	right.addEventListener("mouseout", () => { move("○"); });
 	
 	const walk = () => {
-		up.addEventListener("mouseout", () => { move("○"); });
-		down.addEventListener("mouseout", () => { move("○"); });
-		left.addEventListener("mouseout", () => { move("○"); });
-		right.addEventListener("mouseout", () => { move("○"); });
 		const current_Mode = mode;
-		mouse_X = e.clientX;
-		mouse_Y = e.clientY;
+		// mouse_X = e.clientX;
+		// mouse_Y = e.clientY;
 		setTimeout(() => {
 			const loop = setInterval(() => {
 				action(mode);
 				if (current_Mode !== mode) {
 					clearInterval(loop);
 				}
-			}, 1200);
-		}, 1200);
+			}, 1500);
+		}, 1500);
 	}
 
 	// map.addEventListener("pointermove", (e) => {

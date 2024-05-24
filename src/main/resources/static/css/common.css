@@ -328,6 +328,7 @@ nav button,
 #command,
 .member {
 	border: solid white medium;
+	border-radius: 1vmin;
 	margin-top: 1rem;
 }
 
@@ -340,4 +341,9 @@ nav button,
 
 .display_none{
 	display: none;
+}
+
+.bottom_10 {
+	position: absolute;
+	bottom: 10svh;
 }

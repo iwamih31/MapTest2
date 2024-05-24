@@ -9,6 +9,7 @@
 	<!-- main フラグメントの定義（メインコンテンツ） -->
 	<div th:fragment="main" class="flex_space_between">
 		<!-- 本体部分 -->
+		<!-- インフォメーションパネル -->
 		<div id="information">
 			　インフォメーション　
 		</div>
@@ -35,11 +36,14 @@
 					ステータス
 				</div>
 			</div>
+			<!-- センターパネル -->
 			<div id="center_panel" class="relative">
+				<!-- マップ -->
 				<div id="map">
 				</div>
 				<img class="center_piece" th:src="@{'/image_map/' + ${center_Image} + '.png'}">
 			</div>
+			<!-- コントローラー -->
 			<table id="controller">
 				<tr>
 					<td><button id="A">Ａ</button></td>
@@ -64,11 +68,13 @@
 				<br>
 			</div>
 			<br>
-			<a th:href="@{/main}">メインページへ</a>
 		</div>
+		<!-- コマンドパネル -->
 		<div id="command">
 			　　　コマンド　　　
+			<a class="bottom_10" th:href="@{/main}">メインページへ</a>
 		</div>
+		<!-- データ -->
 		<div id="data" class="display_none">
 			<div id="map_number">[[${map_Number}]]</div>
 			<div id="x">[[${x}]]</div>
