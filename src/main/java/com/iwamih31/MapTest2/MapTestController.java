@@ -121,6 +121,7 @@ public class MapTestController {
 		String[] map_Image_Names = service.map_Image_Names();
 		add_View_Data_(model, "map2");
 		model.addAttribute("map", map);
+		model.addAttribute("map_Number", map_Number);
 		model.addAttribute("x", x);
 		model.addAttribute("y", y);
 		model.addAttribute("center_Image", center_Image);

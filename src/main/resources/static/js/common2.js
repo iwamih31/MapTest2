@@ -8,6 +8,9 @@ window.addEventListener("load", (e) => {
 	const map = document.querySelector("#map");
 	const data = document.querySelector("#data");
 	const map_data_rows = data.querySelectorAll(".map_data_row");
+	const map_Number = Number(data.querySelector("#map_number").textContent);
+	const map_X = map_data_rows[0].length;
+	const map_Y = map_data_rows.length;
 	const button_A = document.querySelector("#A");
 	const button_B = document.querySelector("#B");
 	const button_C = document.querySelector("#C");
@@ -21,40 +24,60 @@ window.addEventListener("load", (e) => {
 	let mode = "○";
 	let mouse_X = e.clientX;;
 	let mouse_Y = e.clientY;
+	let x = Number(data.querySelector("#x").textContent);
+	let y = Number(data.querySelector("#y").textContent);
+
+	// マップの元データ
+	const map_Table = [];
+
+	const set_map_Table = () => {
+		map_data_rows.forEach(map_data_row => {
+			const map_Table_Row = [];
+			const piece_Numbers = map_data_row.querySelectorAll(".piece_number");
+			piece_Numbers.forEach(piece_Number => {
+				map_Table_Row.push(Number(piece_Number.textContent));
+			});
+			map_Table.push(map_Table_Row);
+		});
+	}
+
+	set_map_Table();
+
+	const inRange = (range, num) => {
+		const half_Range = range / 2;
+	let newNum = num;
+	if(half_Range <num) newNum -= range;
+	if(num < - half_Range) newNum += range;
+return newNum;
+	}
 
 	const map_Up = () => {
 		up.classList.add("click_button");
 		down.classList.remove("click_button");
 		left.classList.remove("click_button");
 		right.classList.remove("click_button");
-		map.insertBefore(map_rows[map_rows.length - 1], map_rows[0]);
+		y = inRange(map_Y, y-1);
 	}
 	const map_Down = () => {
 		up.classList.remove("click_button");
 		down.classList.add("click_button");
 		left.classList.remove("click_button");
 		right.classList.remove("click_button");
-		map.appendChild(map_rows[0]);
+		y = inRange(map_Y, y + 1);
 	}
 	const map_Left = () => {
 		up.classList.remove("click_button");
 		down.classList.remove("click_button");
 		left.classList.add("click_button");
 		right.classList.remove("click_button");
-		map_rows.forEach(map_row => {
-			pieces = map_row.querySelectorAll(".map_piece");
-			map_row.insertBefore(pieces[pieces.length - 1], pieces[0]);
-		});
+		x = inRange(map_X, x - 1);
 	}
 	const map_right = () => {
 		up.classList.remove("click_button");
 		down.classList.remove("click_button");
 		left.classList.remove("click_button");
 		right.classList.add("click_button");
-		map_rows.forEach(map_row => {
-			pieces = map_row.querySelectorAll(".map_piece");
-			map_row.appendChild(pieces[0]);
-		});
+		x = inRange(map_X, x + 1);
 	}
 
 	const map_stop = () => {
@@ -95,24 +118,56 @@ window.addEventListener("load", (e) => {
 		}
 	}
 
+	const shift_Map = (originalMap, x, y) => {
+		const return_Map = new Array(originalMap.length);
+		let shift_i;
+		let shift_j;
+		for (let i = 0; i < originalMap.length; i++) {
+			shift_i = (i + y) % originalMap.length;
+			if (shift_i < 0) shift_i += originalMap.length;
+			return_Map[i] = new Array(originalMap[i].length);
+			for (let j = 0; j < originalMap[i].length; j++) {
+				shift_j = (j + x) % originalMap[i].length;
+				if (shift_j < 0) shift_j += originalMap[i].length;
+				return_Map[i][j] = originalMap[shift_i][shift_j];
+			}
+		}
+		return return_Map;
+	}
+
+	const to_Map_Images = (current_map, map_Number) => {
+		const return_Data = [];
+		current_map.forEach(row => {
+			const data_Row = [];
+			row.forEach(piece_Number => {
+				const map_Image = map_Piece(map_Number, piece_Number).image_Name;
+				data_Row.push(map_Image);
+			});
+			return_Data.push(data_Row);
+		});
+		return return_Data;
+	}
+
 	const draw_Map = () => {
 		// map の子要素を全部消去
 		while (map.firstChild) {
 			map.removeChild(map.firstChild);
 		}
+		// 子要素作成用のデータを作成
+		const current_map = shift_Map(map_Table, x, y);
+		const map_Images = to_Map_Images(current_map, map_Number);
 		// 新しいmap の子要素を作成
-		map_data_rows.forEach(map_data_row => {
-			const piece_Numbers = map_data_row.querySelectorAll(".piece_number");
+		map_Images.forEach(map_Images_Row => {
 			const map_row = document.createElement('div');
-			map_row.id = 'map_row';
-			piece_Numbers.forEach(piece_Number => {
-				const map_Image_Name = map_Piece(0, piece_Number.innerText).image_Name;
+			map_row.className = 'map_row';
+			map_Images_Row.forEach(map_Image_Name => {
 				const map_Image = data.querySelector("." + map_Image_Name);
 				const clone_Map_Image = map_Image.cloneNode();
 				map_row.appendChild(clone_Map_Image);
 			});
 			map.appendChild(map_row);
 		});
+		map_View_Range(row_Size, column_Size);
 	};
 	
 	const action = (mode) => {
@@ -267,7 +322,7 @@ window.addEventListener("load", (e) => {
 	// if (mode === ""){
 	// 	walk();
 	// }
-	map_View_Range(row_Size, column_Size);
+	// map_View_Range(row_Size, column_Size);
 	
 });
 

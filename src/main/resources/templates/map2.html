@@ -70,8 +70,11 @@
 			　　　コマンド　　　
 		</div>
 		<div id="data" class="display_none">
+			<div id="map_number">[[${map_Number}]]</div>
+			<div id="x">[[${x}]]</div>
+			<div id="y">[[${y}]]</div>
 			<th:block th:each="image_Name : ${map_Image_Names}">
-				<img th:class="${image_Name}" th:src="@{'/image_map/' + ${image_Name} + '.png'}">
+				<img th:class="${image_Name + ' map_piece'}" th:src="@{'/image_map/' + ${image_Name} + '.png'}">
 			</th:block>
 			<table id="map_data_table">
 				<th:block th:each="row : ${map}">
