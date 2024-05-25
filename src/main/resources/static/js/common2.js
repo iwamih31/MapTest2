@@ -2,7 +2,6 @@
  *
  */
 
-
 window.addEventListener("load", (e) => {
 
 	const map = document.querySelector("#map");
@@ -203,14 +202,14 @@ return newNum;
 		}
 	};
 
-	const stop = (event_Data) => {
-		alert("stop イベント発動");
-		mouse_X = event_Data.clientX;
-		mouse_Y = event_Data.clientY;
-		alert(`X = ${mouse_X} Y = ${mouse_Y}`);
-		alert("総タイル数 = " + tiles.length);
-		alert("行の列数 = " + map_rows.length);
-	};
+	// const stop = (event_Data) => {
+	// 	alert("stop イベント発動");
+	// 	mouse_X = event_Data.clientX;
+	// 	mouse_Y = event_Data.clientY;
+	// 	alert(`X = ${mouse_X} Y = ${mouse_Y}`);
+	// 	alert("総タイル数 = " + tiles.length);
+	// 	alert("行の列数 = " + map_rows.length);
+	// };
 
 	const position = (event_Data) => {
 		return `X = ${event_Data.clientX} Y = ${event_Data.clientY}`;
@@ -303,8 +302,6 @@ return newNum;
 	// 	}
 	// });
 
-
-			
 	window.addEventListener("keydown", (e) => {
 		// alert(e.key + " キーが押されました");
 		console.log(e.key + " キーが押されました");
