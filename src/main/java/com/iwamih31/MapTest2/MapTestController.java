@@ -126,7 +126,7 @@ public class MapTestController {
 		model.addAttribute("y", y);
 		model.addAttribute("center_Image", center_Image);
 		model.addAttribute("map_Image_Names", map_Image_Names);
-		return "view";
+		return "view2";
 	}
 
 	/** view 表示に必要な属性データをモデルに登録 */

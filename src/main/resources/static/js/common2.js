@@ -88,17 +88,17 @@ return newNum;
 
 	const field = (piece_Number) => {
 	switch (Number(piece_Number)) {
-		case 0: return {image_Name:"砂", roll:1}; // 道
-		case 1: return {image_Name:"草", roll:2}; // 魔物出現率アップ
-		case 2: return {image_Name:"山", roll:0}; // 障害物
-		case 3: return {image_Name:"海", roll:0}; // 障害物
-		case 4: return {image_Name:"洞窟", roll:4}; // 洞窟
-		case 5: return {image_Name:"城", roll:4}; // 村
-		case 6: return {image_Name:"山", roll:2}; // 通れる山
-		case 7: return {image_Name:"砂", roll:0}; // 通れない道
-		case 8: return {image_Name:"城", roll:4}; // 神殿
-		case 9: return {image_Name:"城", roll:4}; // 城
-		default: return {image_Name:"闇", roll:0}; // 通れない道
+		case 0: return {image_Name:"砂", role:1}; // 道
+		case 1: return {image_Name:"草", role:2}; // 魔物出現率アップ
+		case 2: return {image_Name:"山", role:0}; // 障害物
+		case 3: return {image_Name:"海", role:0}; // 障害物
+		case 4: return {image_Name:"洞窟", role:4}; // 洞窟
+		case 5: return {image_Name:"城", role:4}; // 村
+		case 6: return {image_Name:"山", role:2}; // 通れる山
+		case 7: return {image_Name:"砂", role:0}; // 通れない道
+		case 8: return {image_Name:"城", role:4}; // 神殿
+		case 9: return {image_Name:"城", role:4}; // 城
+		default: return {image_Name:"闇", role:0}; // 通れない道
 	}
 }
 
@@ -168,15 +168,44 @@ return newNum;
 		});
 		map_View_Range(row_Size, column_Size);
 	};
+
+	const center_XY = (baseArray) => {
+		const center_X = Math.floor(baseArray[0].length / 2);
+		const center_Y = Math.floor(baseArray.length / 2);
+		return [center_X, center_Y];
+	}
+
+	const barrier_Check = (mode, map_Number, map_Table, x, y) => {
+		console.log(mode);
+		if (mode === "○") return;
+		let after_X = x;
+		let after_Y = y;
+		if (mode === "上") after_Y =  y - 1;
+		if (mode === "下") after_Y = y + 1;
+		if (mode === "左") after_X = x - 1;
+		if (mode === "右") after_X = x + 1;
+		const after_MAP = shift_Map(map_Table, after_X, after_Y);
+		const center = center_XY(after_MAP);
+		const role = map_Piece(map_Number, after_MAP[center[1]][center[0]]).role;
+		if (role < 1) mode = "○";
+		console.log(role);
+		console.log(mode);
+		// 衝突音を鳴らす
+		// fall_Sound();
+		return mode;
+	}
 	
 	const action = (mode) => {
-		map_rows = document.querySelectorAll(".map_row");
-		if (mode === "上") map_Up();
-		if (mode === "下") map_Down();
-		if (mode === "左") map_Left();
-		if (mode === "右") map_right();
-		if (mode === "○") map_stop();
+		// map_rows = document.querySelectorAll(".map_row");
+		// 進行できるかチェック
+		const result = barrier_Check(mode, map_Number, map_Table, x, y);
+		if (result === "上") map_Up();
+		if (result === "下") map_Down();
+		if (result === "左") map_Left();
+		if (result === "右") map_right();
+		if (result === "○") map_stop();
 		draw_Map();
+		// map_Event();
 	};
 
 	const map_View_Range = (row_Size, column_Size) => {

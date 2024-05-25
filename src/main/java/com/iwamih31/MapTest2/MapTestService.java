@@ -302,10 +302,10 @@ public class MapTestService {
 		boolean isBarrier = false;
 		int[][] map = getOriginalMap(map_Number);
 		int[][] shift_Map = shift_Map(map, target_X, target_Y);
-		int[] mapCenter = center_XY(shift_Map);
-		int nextX = mapCenter[0];
-		int nextY = mapCenter[1];
-		MapPiece mapPiece = mapPiece(map_Number, map[nextX][nextY]);
+		int[] center_XY = center_XY(shift_Map);
+		int center_X = center_XY[0];
+		int center_Y = center_XY[1];
+		MapPiece mapPiece = mapPiece(map_Number, shift_Map[center_X][center_Y]);
 		int role = mapPiece.getRole();
 		if (role < 1 ) isBarrier = true;
 		return isBarrier;
