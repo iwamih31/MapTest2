@@ -170,6 +170,10 @@ return newNum;
 		map_View_Range(row_Size, column_Size);
 	};
 
+	const comment = (message) => {
+
+	}
+
 	const center_XY = (baseArray) => {
 		const center_X = Math.floor(baseArray[0].length / 2);
 		const center_Y = Math.floor(baseArray.length / 2);
@@ -260,7 +264,7 @@ return newNum;
 		const after_Map_Number = after[0];
 		const after_X = after[1];
 		const after_Y = after[2];
-		alert("Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します");
+		comment("Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します");
 	}
 
 	const piece_Event = (map_Number, x, y) => {
