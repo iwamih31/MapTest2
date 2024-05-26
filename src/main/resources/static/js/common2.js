@@ -6,6 +6,7 @@ window.addEventListener("load", (e) => {
 
 	const map = document.querySelector("#map");
 	const data = document.querySelector("#data");
+	const message = document.querySelector("#message");
 	const map_data_rows = data.querySelectorAll(".map_data_row");
 	const map_Number = Number(data.querySelector("#map_number").textContent);
 	const map_X = map_data_rows[0].length;

@@ -10,6 +10,7 @@ body {
 #main {
 	margin: auto;
 	width: 80%;
+	margin-top: 1rem;
 }
 
 #header,
@@ -321,7 +322,7 @@ nav button,
 	background-color: royalblue;
 }
 
-#map,
+
 #controller,
 #message,
 #information,
@@ -329,13 +330,22 @@ nav button,
 .member {
 	border: solid white medium;
 	border-radius: 1vmin;
-	margin-top: 1rem;
+	/* margin-top: 1rem; */
+	padding: 0 1rem;
+}
+
+#map {
+	padding: 0;
 }
 
 #information,
-#center_container,
 #command {
-	width: 33%;
+	width: 25%;
+	height: 91svh;
+}
+
+#center_container {
+	width: 48%;
 	height: 91svh;
 }
 
@@ -346,4 +356,8 @@ nav button,
 .bottom_10 {
 	position: absolute;
 	bottom: 10svh;
+}
+
+.message {
+	padding: 0 1rem;
 }

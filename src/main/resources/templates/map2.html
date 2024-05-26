@@ -16,24 +16,28 @@
 		<div id="center_container">
 			<div id="member_status" class="flex_space_between">
 				<div class="member">
-					　メンバー1　
-					<br><br>
-					ステータス
-					<br></div>
+					<div>　メンバー1　</div>
+					<div>Lv.:</div>
+					<div>HP:</div>
+					<div>MP:</div>
+			</div>
 				<div class="member">
-					　メンバー2　
-					<br><br>
-					ステータス
+					<div>　メンバー2　</div>
+					<div>Lv.:</div>
+					<div>HP:</div>
+					<div>MP:</div>
 				</div>
 				<div class="member">
-					　メンバー3　
-					<br><br>
-					ステータス
+					<div>　メンバー3　</div>
+					<div>Lv.:</div>
+					<div>HP:</div>
+					<div>MP:</div>
 				</div>
 				<div class="member">
-					　メンバー4　
-					<br><br>
-					ステータス
+					<div>　メンバー4　</div>
+					<div>Lv.:</div>
+					<div>HP:</div>
+					<div>MP:</div>
 				</div>
 			</div>
 			<!-- センターパネル -->
@@ -43,36 +47,37 @@
 				</div>
 				<img class="center_piece" th:src="@{'/image_map/' + ${center_Image} + '.png'}">
 			</div>
-			<!-- コントローラー -->
-			<table id="controller">
-				<tr>
-					<td><button id="A">Ａ</button></td>
-					<td><button id="up"> ▲ </button></td>
-					<td><button id="B">Ｂ</button></td>
-				</tr>
-				<tr>
-					<td><button id="left">◀</button></td>
-					<td><button id="center">〇</button></td>
-					<td><button id="right">▶</button></td>
-				</tr>
-				<tr>
-					<td><button id="C">Ｃ</button></td>
-					<td><button id="down"> ▼ </button></td>
-					<td><button id="D">Ｄ</button></td>
-				</tr>
-			</table>
 			<div id="message">
-				<br>
-				　----- メッセージ -----
-				<br>
-				<br>
+				<div id="message_top" class="message">　</div>
+				<div id="message_center" class="message">----- メッセージ -----</div>
+				<div id="message_bottom" class="message">　</div>
 			</div>
 			<br>
 		</div>
 		<!-- コマンドパネル -->
 		<div id="command">
-			　　　コマンド　　　
-			<a class="bottom_10" th:href="@{/main}">メインページへ</a>
+			コマンド　　　
+			<div class="bottom_10">
+				<!-- コントローラー -->
+				<table id="controller">
+					<tr>
+						<td><button id="A">Ａ</button></td>
+						<td><button id="up"> ▲ </button></td>
+						<td><button id="B">Ｂ</button></td>
+					</tr>
+					<tr>
+						<td><button id="left">◀</button></td>
+						<td><button id="center">〇</button></td>
+						<td><button id="right">▶</button></td>
+					</tr>
+					<tr>
+						<td><button id="C">Ｃ</button></td>
+						<td><button id="down"> ▼ </button></td>
+						<td><button id="D">Ｄ</button></td>
+					</tr>
+				</table>
+				<a th:href="@{/main}">メインページへ</a>
+			</div>
 		</div>
 		<!-- データ -->
 		<div id="data" class="display_none">
