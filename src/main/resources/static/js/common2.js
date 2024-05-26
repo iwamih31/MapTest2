@@ -170,8 +170,17 @@ return newNum;
 		map_View_Range(row_Size, column_Size);
 	};
 
-	const comment = (message) => {
-
+	const comment = (message_List) => {
+		// message の子要素を全部消去
+		while (message.firstChild) {
+			message.removeChild(message.firstChild);
+		}
+		// 新しい message の子要素を作成
+		message_List.forEach(one_Message => {
+			const message_row = document.createElement('div');
+			message_row.textContent = one_Message;
+			message.appendChild(message_row);
+		});
 	}
 
 	const center_XY = (baseArray) => {
@@ -206,19 +215,19 @@ return newNum;
 	const transition = (key) => {
 		switch (key) {
 			case "良い人":
-				alert(key + 'のページに遷移します。');
+				comment(['　', key + 'のページに遷移します', '　']);
 				break;
 			case "モンスター":
-				alert(key + 'のページに遷移します。');
+				comment(['　', key + 'のページに遷移します', '　']);
 				break;
 			case "アイテム":
-				alert(key + 'のページに遷移します。');
+				comment(['　', key + 'のページに遷移します', '　']);
 				break;
 			case "情報":
-				alert(key + 'のページに遷移します。');
+				comment(['　', key + 'のページに遷移します', '　']);
 				break;
 			default:
-				console.log('何も起こりませんでした');
+				comment(['　', '何も起こりませんでした', '　']);
 				break;
 		}
 	}
@@ -264,7 +273,7 @@ return newNum;
 		const after_Map_Number = after[0];
 		const after_X = after[1];
 		const after_Y = after[2];
-		comment("Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します");
+		comment(["　", "Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します", "　"]);
 	}
 
 	const piece_Event = (map_Number, x, y) => {
@@ -272,8 +281,13 @@ return newNum;
 		if (piece_Name === "") transition(piece_Name);
 		map_Change(piece_Name);
 	};
+
+	const comment_Clear = () => {
+		comment(["　", "　", "　"]);
+	}
 	
 	const walk_Event = (role) => {
+		comment_Clear();
 		let event_Rate = 0;
 		if (role === 1) event_Rate = 30;
 		if (role === 2) event_Rate = 60;
@@ -281,6 +295,7 @@ return newNum;
 			piece_Event(map_Number, x, y);
 		}, 1500);
 		if (random(1,100) < event_Rate) {
+			move("○");
 			let event_Name = "";
 			let event_Number = random(1, 100);
 			if (event_Number < (100 - event_Rate) / 10) event_Name = "良い人";
