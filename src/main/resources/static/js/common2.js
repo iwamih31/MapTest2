@@ -88,17 +88,17 @@ return newNum;
 
 	const field = (piece_Number) => {
 	switch (Number(piece_Number)) {
-		case 0: return {image_Name:"砂", role:1}; // 道
-		case 1: return {image_Name:"草", role:2}; // 魔物出現率アップ
-		case 2: return {image_Name:"山", role:0}; // 障害物
-		case 3: return {image_Name:"海", role:0}; // 障害物
-		case 4: return {image_Name:"洞窟", role:4}; // 洞窟
-		case 5: return {image_Name:"城", role:4}; // 村
-		case 6: return {image_Name:"山", role:2}; // 通れる山
-		case 7: return {image_Name:"砂", role:0}; // 通れない道
-		case 8: return {image_Name:"城", role:4}; // 神殿
-		case 9: return {image_Name:"城", role:4}; // 城
-		default: return {image_Name:"闇", role:0}; // 通れない道
+		case 0: return {image_Name:"砂", role:2}; // 魔物出現率高
+		case 1: return {image_Name:"草", role:1}; // 通常
+		case 2: return {image_Name:"山", role:0}; // 通行不可
+		case 3: return {image_Name:"海", role:0}; // 通行不可
+		case 4: return {image_Name:"洞窟", role:4}; // イベント（洞窟）
+		case 5: return {image_Name:"城", role:4}; // イベント（村）
+		case 6: return {image_Name:"山", role:2}; // 魔物出現率高 (通れる山)
+		case 7: return {image_Name:"砂", role:0}; // 通行不可(通れない道)
+		case 8: return {image_Name:"城", role:4}; // イベント（神殿）
+		case 9: return {image_Name:"城", role:4}; // イベント（城）
+		default: return {image_Name:"闇", role:0}; // 通行不可(通れない道)
 	}
 }
 
@@ -172,21 +172,20 @@ return newNum;
 	const center_XY = (baseArray) => {
 		const center_X = Math.floor(baseArray[0].length / 2);
 		const center_Y = Math.floor(baseArray.length / 2);
-		return [center_X, center_Y];
+		return { "X": center_X, "Y":center_Y};
 	}
 
-	const barrier_Check = (mode, map_Number, map_Table, x, y) => {
-		console.log(mode);
-		if (mode === "○") return;
+	const after_XY = (mode, x, y) => {
 		let after_X = x;
 		let after_Y = y;
-		if (mode === "上") after_Y =  y - 1;
+		if (mode === "上") after_Y = y - 1;
 		if (mode === "下") after_Y = y + 1;
 		if (mode === "左") after_X = x - 1;
 		if (mode === "右") after_X = x + 1;
-		const after_MAP = shift_Map(map_Table, after_X, after_Y);
-		const center = center_XY(after_MAP);
-		const role = map_Piece(map_Number, after_MAP[center[1]][center[0]]).role;
+		return {"X":after_X, "Y":after_Y};
+	}
+
+	const barrier_Check = (role) => {
 		if (role < 1) mode = "○";
 		console.log(role);
 		console.log(mode);
@@ -194,18 +193,71 @@ return newNum;
 		// fall_Sound();
 		return mode;
 	}
+
+	const random = (min, max) => {
+		return Math.floor(Math.random() * (max + 1 - min)) + min;
+	}
+	
+	const transition = (key) => {
+		switch (key) {
+			case "良い人":
+				alert(key + 'のページに遷移します。');
+				break;
+			case "モンスター":
+				alert(key + 'のページに遷移します。');
+				break;
+			case "アイテム":
+				alert(key + 'のページに遷移します。');
+				break;
+			case "情報":
+				alert(key + 'のページに遷移します。');
+				break;
+			default:
+				console.log('何も起こりませんでした');
+				break;
+		}
+	}
+
+	piece_Event();
+
+	const walk_Event = (role) => {
+		let event_Rate = 0;
+		if (role === 1) event_Rate = 30;
+		if (role === 2) event_Rate = 60;
+		if (role === 4) piece_Event();
+		if (random(1,100) < event_Rate) {
+			let event_Name = "";
+			let event_Number = random(1, 100);
+			if (event_Number < (100 - event_Rate) / 10) event_Name = "良い人";
+			else if (event_Number < 90) event_Name = "モンスター";
+			else if (event_Number < 95) event_Name = "アイテム";
+			else event_Name = "情報";
+			setTimeout(() => {
+				transition(event_Name);
+			}, 1500);
+		}
+	}
 	
 	const action = (mode) => {
-		// map_rows = document.querySelectorAll(".map_row");
+		// 移動先の Role を取得
+		const destination = after_XY(mode, x, y)
+		const after_MAP = shift_Map(map_Table, destination.X, destination.Y);
+		const center = center_XY(after_MAP);
+		const after_Role = map_Piece(map_Number, after_MAP[center.Y][center.X]).role;
 		// 進行できるかチェック
-		const result = barrier_Check(mode, map_Number, map_Table, x, y);
-		if (result === "上") map_Up();
-		if (result === "下") map_Down();
-		if (result === "左") map_Left();
-		if (result === "右") map_right();
-		if (result === "○") map_stop();
-		draw_Map();
-		// map_Event();
+		const result = barrier_Check(after_Role);
+		if (result === "○") {
+			map_stop();
+		} else {
+			if (result === "上") map_Up();
+			if (result === "下") map_Down();
+			if (result === "左") map_Left();
+			if (result === "右") map_right();
+			// 移動後のマップを描画
+			draw_Map();
+			// 移動先のイベント決定
+			walk_Event(after_Role);
+		}
 	};
 
 	const map_View_Range = (row_Size, column_Size) => {
@@ -270,8 +322,8 @@ return newNum;
 	const move = (destination) => {
 		if (destination !== mode) {
 			mode = destination;
-			console.log("移動先 = " + destination);
-			walk();
+			console.log("移動先 = " + mode);
+			if (mode !== "○") walk();
 		}
 	}
 
