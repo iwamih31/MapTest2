@@ -218,13 +218,63 @@ return newNum;
 		}
 	}
 
-	piece_Event();
+	const piece_Position = (piece_Name) => {
+		switch (piece_Name) {
+			case "フィールドA 城A": return [ 0, 0, 0 ];
+			case "城A 1階 正面出口": return [ 1, 1, 8 ];
+			case "城A 1階 階段A": return [ 1, 1, -1 ];
+			case "城A 1階 洞窟A": return [ 1, -3, 6 ];
+			case "城A 1階 洞窟B": return [ 1, 4, 2 ];
+			case "城A 2階 階段A": return [ 3, 1, -1 ];
+			case "洞窟A 地下1階 入口": return [ 2, 7, 7 ];
+			case "洞窟B 地下1階 入口": return [ 2, 4, 2 ];
+			default: return [ 0, 0, 0 ];
+		}
+	}
+	
+	const fit = (map_Number_X_Y, piece_Name) => {
+		const check_Position = piece_Position(piece_Name);
+		if (map_Number_X_Y[0] === check_Position[0] &&
+				map_Number_X_Y[1] === check_Position[1] &&
+				map_Number_X_Y[2] === check_Position[2]) {
+			return true;
+		}
+		return false;
+	}
+		
+	const next_Map_Name = (map_Number, x, y) => {
+		const now_Piece = [ map_Number, x, y ];
+		if (fit(now_Piece, "フィールドA 城A")) return "城A 1階 正面出口";
+		if (fit(now_Piece, "城A 1階 正面出口")) return "フィールドA 城A";
+		if (fit(now_Piece, "城A 1階 階段A")) return "城A 2階 階段A";
+		if (fit(now_Piece, "城A 1階 洞窟A")) return "洞窟A 地下1階 入口";
+		if (fit(now_Piece, "城A 1階 洞窟B")) return "洞窟B 地下1階 入口";
+		if (fit(now_Piece, "城A 2階 階段A")) return "城A 1階 階段A";
+		if (fit(now_Piece, "洞窟A 地下1階 入口")) return "城A 1階 洞窟A";
+		return "フィールドA 城A";
+	}
+		
+	const map_Change = (piece_Name) => {
+		const after = piece_Position(piece_Name);
+		const after_Map_Number = after[0];
+		const after_X = after[1];
+		const after_Y = after[2];
+		alert("Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します");
+	}
 
+	const piece_Event = (map_Number, x, y) => {
+		const piece_Name = next_Map_Name(map_Number, x, y);
+		if (piece_Name === "") transition(piece_Name);
+		map_Change(piece_Name);
+	};
+	
 	const walk_Event = (role) => {
 		let event_Rate = 0;
 		if (role === 1) event_Rate = 30;
 		if (role === 2) event_Rate = 60;
-		if (role === 4) piece_Event();
+		if (role === 4) setTimeout(() => {
+			piece_Event(map_Number, x, y);
+		}, 1500);
 		if (random(1,100) < event_Rate) {
 			let event_Name = "";
 			let event_Number = random(1, 100);
