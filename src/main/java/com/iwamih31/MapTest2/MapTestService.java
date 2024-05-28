@@ -4,6 +4,8 @@ import javax.sound.sampled.LineUnavailableException;
 
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+
 @Service
 public class MapTestService {
 
@@ -381,7 +383,49 @@ public class MapTestService {
 		return map_Image(view_Map_Data);
 	}
 
-	public String[] map_Image_Names() {
-		return new String[]{"闇", "海", "砂", "山", "城", "草", "洞窟", "勇者"};
+	public String[] map_Image_Names(int map_Number) {
+		// TODO Auto-generated method stub
+		switch (map_Number) {
+			case 0: return new String[] { "闇", "海", "砂", "山", "城", "草", "洞窟", "勇者" };
+			default: return new String[] { "闇", "海", "砂", "山", "城", "草", "洞窟", "勇者" };
+		}
+	}
+
+  public int[] map_X_Y(int data_Id) {
+    // DBに保存されている map_Number, X, Y を配列で返す 
+		// TODO Auto-generated method stub
+		int[] map_X_Y = {0, 0, 0}; // 仮データ
+		return map_X_Y;
+  }
+
+  public void save(int data_Id, Actor[] party, int map_Number, int x, int y) {
+		// 各DBを更新
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'save'");
+  }
+
+  public String center_Image(int data_Id) {
+    // DBに保存されている piece名 を返す
+		// TODO Auto-generated method stub
+		String center_Image = "勇者"; // 仮データ
+		return center_Image;
+  }
+
+  public Actor[] party(int data_Id) {
+		// DBに保存されている party情報 を返す
+    // TODO Auto-generated method stub
+    Actor[] party = new Actor[4];
+		party[0] = new Actor(0, 1, "戦士", "戦士", 1, 0, 1, 100, 0, 0);
+		party[1] = new Actor(1, 1, "勇者", "勇者", 2, 0, 1,80, 20, 0);
+		party[2] = new Actor(2, 1, "僧侶", "僧侶", 3, 0, 1, 60, 30, 0);
+		party[3] = new Actor(3, 1, "魔術師", "魔術師", 4, 0, 1, 30, 50, 0);
+;
+		return party;
+  }
+
+	public Actor[] to_Party(JSONPObject party_JSON) {
+		// TODO Auto-generated method stub
+		Actor[] party = new Actor[]{};
+		return party;
 	}
 }

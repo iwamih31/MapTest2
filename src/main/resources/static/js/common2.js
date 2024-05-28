@@ -4,7 +4,9 @@
 
 window.addEventListener("load", (e) => {
 
+	const req = document.querySelector("#req").textContent;
 	const map = document.querySelector("#map");
+	const party = document.querySelector("#party");
 	const data = document.querySelector("#data");
 	const message = document.querySelector("#message");
 	const map_data_rows = data.querySelectorAll(".map_data_row");
@@ -88,20 +90,20 @@ return newNum;
 	}
 
 	const field = (piece_Number) => {
-	switch (Number(piece_Number)) {
-		case 0: return {image_Name:"砂", role:2}; // 魔物出現率高
-		case 1: return {image_Name:"草", role:1}; // 通常
-		case 2: return {image_Name:"山", role:0}; // 通行不可
-		case 3: return {image_Name:"海", role:0}; // 通行不可
-		case 4: return {image_Name:"洞窟", role:4}; // イベント（洞窟）
-		case 5: return {image_Name:"城", role:4}; // イベント（村）
-		case 6: return {image_Name:"山", role:2}; // 魔物出現率高 (通れる山)
-		case 7: return {image_Name:"砂", role:0}; // 通行不可(通れない道)
-		case 8: return {image_Name:"城", role:4}; // イベント（神殿）
-		case 9: return {image_Name:"城", role:4}; // イベント（城）
-		default: return {image_Name:"闇", role:0}; // 通行不可(通れない道)
+		switch (Number(piece_Number)) {
+			case 0: return {image_Name:"砂", role:2}; // 魔物出現率高
+			case 1: return {image_Name:"草", role:1}; // 通常
+			case 2: return {image_Name:"山", role:0}; // 通行不可
+			case 3: return {image_Name:"海", role:0}; // 通行不可
+			case 4: return {image_Name:"洞窟", role:4}; // イベント（洞窟）
+			case 5: return {image_Name:"城", role:4}; // イベント（村）
+			case 6: return {image_Name:"山", role:2}; // 魔物出現率高 (通れる山)
+			case 7: return {image_Name:"砂", role:0}; // 通行不可(通れない道)
+			case 8: return {image_Name:"城", role:4}; // イベント（神殿）
+			case 9: return {image_Name:"城", role:4}; // イベント（城）
+			default: return {image_Name:"闇", role:0}; // 通行不可(通れない道)
+		}
 	}
-}
 
 	const	map_Piece = (map_Number, piece_Number) => {
 		switch (map_Number) {
@@ -169,6 +171,90 @@ return newNum;
 		});
 		map_View_Range(row_Size, column_Size);
 	};
+
+	// const draw_Party = () => {
+	// 	let label;
+	// 	let value
+	// 	// map の子要素を全部消去
+	// 	while (party.firstChild) {
+	// 		party.removeChild(party.firstChild);
+	// 	}
+	// 	// 子要素作成用のデータを取得
+	// 	const party_data = data.querySelectorAll(".member_data");
+	// 	// 新しいmap の子要素を作成
+	// 	party_data.forEach(member_data => {
+	// 		// <div class="member">
+	// 		const member = document.createElement('div');
+	// 		member.className = 'member';
+	// 		// 名前
+	// 		const member_name = document.createElement('div');
+	// 		member_name.className = 'center';
+	// 		member_name.textContent = member_data.querySelector(".member_name").textContent;
+	// 		// Lev.
+	// 		const member_lev = document.createElement('div');
+	// 		member_lev.className = 'flex_space_between';
+	// 		label = document.createElement('span');
+	// 		label.textContent = 'Lev:';
+	// 		value = document.createElement('span');
+	// 		value.textContent = member_data.querySelector(".member_lev").textContent;
+	// 		member_lev.appendChild(label);
+	// 		member_lev.appendChild(value);
+	// 		// HP
+	// 		const member_hp = document.createElement('div');
+	// 		member_hp.className = 'flex_space_between';
+	// 		label = document.createElement('span');
+	// 		label.textContent = 'Lev:';
+	// 		value = document.createElement('span');
+	// 		value.textContent = member_data.querySelector(".member_hp").textContent;
+	// 		member_hp.appendChild(label);
+	// 		member_hp.appendChild(value);
+	// 		// MP
+	// 		const member_mp = document.createElement('div');
+	// 		member_mp.className = 'flex_space_between';
+	// 		label = document.createElement('span');
+	// 		label.textContent = 'Lev:';
+	// 		value = document.createElement('span');
+	// 		value.textContent = member_data.querySelector(".member_mp").textContent;
+	// 		member_mp.appendChild(label);
+	// 		member_mp.appendChild(value);
+	// 		member.appendChild(member_name);
+	// 		member.appendChild(member_lev);
+	// 		member.appendChild(member_hp);
+	// 		member.appendChild(member_mp);
+	// 		party.appendChild(member);
+	// 	});
+	// };
+
+	const draw_Party = () => {
+		// パーティーのデータを取得
+		const party_data = data.querySelectorAll('.member_data');
+		// 新しいデータで書き換え
+		for (let index = 0; index < party_data.length; index++) {
+			const member = party_data[index];
+			const member_name = member.querySelector('.member_name').textContent;
+			const member_lev = member.querySelector('.member_lev').textContent;
+			const member_hp = member.querySelector('.member_hp').textContent;
+			const member_mp = member.querySelector('.member_mp').textContent;
+			party.querySelector('#member_name' + index).textContent = member_name;
+			party.querySelector('#member_lev' + index).textContent = member_lev;
+			party.querySelector('#member_hp' + index).textContent = member_hp;
+			party.querySelector('#member_mp' + index).textContent = member_mp;
+		}
+	};
+
+	const languor = () => {
+		// パーティーのデータを取得
+		const party_data = data.querySelectorAll('.member_data');
+		// 新しいデータで書き換え
+		for (let index = 0; index < party_data.length; index++) {
+			const member = party_data[index];
+			const member_hp = member.querySelector('.member_hp');
+			const member_mp = member.querySelector('.member_mp');
+			member_hp.textContent--;
+			member_mp.textContent++;
+		}
+		draw_Party();
+	}
 
 	const comment = (message_List) => {
 		// message の子要素を全部消去
@@ -267,6 +353,45 @@ return newNum;
 		if (fit(now_Piece, "洞窟A 地下1階 入口")) return "城A 1階 洞窟A";
 		return "フィールドA 城A";
 	}
+
+	const transition_Parameter = (url, data) => {
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			console.log('Success:', data);
+			window.location.href = url; // ここで画面遷移を行います
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+		});
+	}
+
+	const party_Data = () => {
+		// パーティーのデータを取得
+		const party_Data = data.querySelectorAll('.member_data');
+		
+		let member_Array = new Array;
+		party_Data.forEach(member => {
+			const id = member.querySelector('.member_id').textContent;
+			const actor_name = member.querySelector('.member_name').textContent;
+			const role = member.querySelector('.member_role').textContent;
+			const exp = member.querySelector('.member_exp').textContent;
+			const lev = member.querySelector('.member_lev').textContent;
+			const hp = member.querySelector('.member_hp').textContent;
+			const mp = member.querySelector('.member_mp').textContent;
+			const wp = member.querySelector('.member_wp').textContent;
+
+			member_Array.push({ id: id, actor_name: actor_name, role: role, exp: exp, lev: lev, hp: hp, mp: mp, wp: wp });
+		});
+		alert(member_Array);
+		return member_Array;
+	}
 		
 	const map_Change = (piece_Name) => {
 		const after = piece_Position(piece_Name);
@@ -274,6 +399,14 @@ return newNum;
 		const after_X = after[1];
 		const after_Y = after[2];
 		comment(["　", "Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します", "　"]);
+		let data = {
+			data_Id: document.querySelector("#data_id").textContent,
+			party: party_Data(),
+			map_Number: document.querySelector("#map_number").textContent,
+			x: document.querySelector("#x").textContent,
+			y: document.querySelector("#y").textContent,
+		};
+		transition_Parameter(".." + req + "/Map2", data);
 	}
 
 	const piece_Event = (map_Number, x, y) => {
@@ -325,6 +458,7 @@ return newNum;
 			if (result === "右") map_right();
 			// 移動後のマップを描画
 			draw_Map();
+			languor();
 			// 移動先のイベント決定
 			walk_Event(after_Role);
 		}
@@ -393,7 +527,11 @@ return newNum;
 		if (destination !== mode) {
 			mode = destination;
 			console.log("移動先 = " + mode);
-			if (mode !== "○") walk();
+			if (mode === "○") {
+				map_stop();
+			} else {
+				walk();
+			}
 		}
 	}
 
@@ -465,6 +603,8 @@ return newNum;
 	});
 
 	draw_Map();
+	draw_Party();
+
 
 	// if (mode === ""){
 	// 	walk();

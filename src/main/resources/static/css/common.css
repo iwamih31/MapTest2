@@ -330,8 +330,11 @@ nav button,
 .member {
 	border: solid white medium;
 	border-radius: 1vmin;
-	/* margin-top: 1rem; */
 	padding: 0 1rem;
+}
+
+.member {
+	width: 24%;
 }
 
 #map {

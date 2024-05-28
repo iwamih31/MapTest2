@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 
@@ -77,8 +79,7 @@ public class MapTestController {
 	public String start2(
 			RedirectAttributes redirectAttributes
 			) {
-		redirectAttributes.addFlashAttribute(
-			"piece_Name", "フィールドA 城A");
+				redirectAttributes.addFlashAttribute("data_Id", 1);
 		return redirect("/Map2");
 	}
 
@@ -97,7 +98,7 @@ public class MapTestController {
 	@GetMapping("/Map")
 	public String map(
 			@ModelAttribute("map_Image") String[][] map_Image,
-			@ModelAttribute("center_Image") String[][] center_Image,
+			@ModelAttribute("center_Image") String center_Image,
 			@ModelAttribute("x")int x,
 			@ModelAttribute("y")int y,
 			Model model) {
@@ -108,20 +109,38 @@ public class MapTestController {
 		return "view";
 	}
 
+	@PostMapping("/Map2")
+	public String map2(
+			@RequestParam("data_Id") int data_Id,
+			@RequestParam("party") JSONPObject party_JSON,
+			@RequestParam("map_Number") int map_Number,
+			@RequestParam("x") int x,
+			@RequestParam("y") int y,
+			RedirectAttributes redirectAttributes) {
+
+				Actor[] party = service.to_Party(party_JSON);
+		service.save(data_Id, party, map_Number, x, y);
+		redirectAttributes.addFlashAttribute("data_Id", data_Id);
+		return redirect("/Map2");
+	}
+
 	@GetMapping("/Map2")
 	public String map2(
-			@ModelAttribute("piece_Name") String piece_Name,
+			@ModelAttribute("data_Id") int data_Id,
 			Model model) {
-				int[] map_X_Y = service.piece_Position(piece_Name);
-				int map_Number = map_X_Y[0];
-				int x = map_X_Y[1];
-				int y = map_X_Y[2];
-				int[][] map = service.getOriginalMap(map_Number);
-				String center_Image = service.center_Image;
-		String[] map_Image_Names = service.map_Image_Names();
+		Actor[] party = service.party(data_Id);
+		int[] map_X_Y = service.map_X_Y(data_Id);
+		int map_Number = map_X_Y[0];
+		int x = map_X_Y[1];
+		int y = map_X_Y[2];
+		int[][] map = service.getOriginalMap(map_Number);
+		String center_Image = service.center_Image(data_Id);
+		String[] map_Image_Names = service.map_Image_Names(map_Number);
 		add_View_Data_(model, "map2");
-		model.addAttribute("map", map);
+		model.addAttribute("data_Id", data_Id);
+		model.addAttribute("party", party);
 		model.addAttribute("map_Number", map_Number);
+		model.addAttribute("map", map);
 		model.addAttribute("x", x);
 		model.addAttribute("y", y);
 		model.addAttribute("center_Image", center_Image);
