@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -79,8 +78,10 @@ public class MapTestController {
 	@GetMapping("/Start2")
 	public String start2(
 			RedirectAttributes redirectAttributes) {
-		redirectAttributes.addAttribute("data_Id", 1);
-		redirectAttributes.addAttribute("data_Key", 1234567890);
+				int data_Id = 1;
+				service.save(data_Id, service.party(data_Id), 0, 0, 0);
+		redirectAttributes.addAttribute("data_Id", data_Id);
+		redirectAttributes.addAttribute("data_Key", service.data_Key(data_Id));
 		return redirect("/Map2");
 	}
 

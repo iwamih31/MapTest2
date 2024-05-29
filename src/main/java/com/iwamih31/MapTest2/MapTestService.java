@@ -12,6 +12,7 @@ public class MapTestService {
 
 	@Autowired
 	private Actor_Repository actor_Repository;
+	@Autowired
 	private Data_Info_Repository data_Info_Repository;
 
 	private int view_X =15;
@@ -405,12 +406,25 @@ public class MapTestService {
 
   public void save(int data_Id, Actor[] party, int map_Number, int x, int y) {
 		// 各DBを更新
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'save'");
+		// actor テーブルに登録されている各メンバーのステータスを更新
+		for (Actor member : party) {
+			actor_Repository.save(member);
+		}
+		// 新しいdata_keyを作成
+		String data_Key = data_Key();
+		// data_info テーブルの data_Key, map_Number, x, y を書き換え
+		Data_Info data_Info = new Data_Info(data_Id,data_Key,map_Number,x,y);
+		data_Info_Repository.save(data_Info);
   }
 
-  public String center_Image(int data_Id) {
-    // DBに保存されている piece名 を返す
+  private String data_Key() {
+		// TODO Auto-generated method stub
+		// 新しいデータKeyを作成して返す
+		return "1234567890";
+	}
+
+	public String center_Image(int data_Id) {
+    // DBに保存されている center_Image の名前を返す
 		// TODO Auto-generated method stub
 		String center_Image = "勇者"; // 仮データ
 		return center_Image;
@@ -435,8 +449,7 @@ public class MapTestService {
 	}
 
 	public String data_Key(int data_Id) {
-		// TODO Auto-generated method stub
 		// data_infoテーブルよりdata_Idの現在のdata_Keyを取得して返す
-		return data_Info_Repository.data_Key(data_Id);
+		return data_Info_Repository.getReferenceById(data_Id).getData_Key();
 	}
 }

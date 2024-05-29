@@ -20,9 +20,16 @@ public class Data_Info {
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Integer id;
-  // 
-  @Column(name = "data_id", nullable = false)
-  private Integer data_Id;
+  // データキー
   @Column(name = "data_key", nullable = true)
-  private Integer data_Key;
+  private String data_Key;
+  // マップナンバー
+  @Column(name = "map_number", nullable = true)
+  private Integer map_Number;
+  // x座標
+  @Column(name = "x", nullable = true)
+  private Integer x;
+  // y座標
+  @Column(name = "y", nullable = true)
+  private Integer y;
 }

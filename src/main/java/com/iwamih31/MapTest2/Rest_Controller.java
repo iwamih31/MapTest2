@@ -49,7 +49,7 @@ public class Rest_Controller {
 			System.out.println("  member:");
 			System.out.println("    id: " + member.getId());
 			System.out.println("    data_Id: " + member.getData_Id());
-			System.out.println("    name: " + member.getActor_name());
+			System.out.println("    name: " + member.getActor_Name());
 			System.out.println("    role: " + member.getRole());
 			System.out.println("    exp: " + member.getExp());
 			System.out.println("    lev: " + member.getLev());
