@@ -7,12 +7,12 @@ import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface Data_Info_Repository extends JpaRepository<Data_Info, Integer> {
-
-  	/**	Action リスト取得（date 指定 the_day 順） */
+  /** data_Key 取得 */
 	@Query("select data_key"
 			+ " from Data_Info info"
-			+ " where info.data_id =:data_id")
+			+ " where info.id =:data_Id")
 	public String data_Key(
-			@Param("data_id") Integer data_Id);
+		@Param("data_Id") Integer data_Id
+  );
 }
 
