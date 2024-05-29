@@ -300,13 +300,25 @@ window.addEventListener("load", (e) => {
 	const random = (min, max) => {
 		return Math.floor(Math.random() * (max + 1 - min)) + min;
 	}
+
+	const load_Session_Data = (key) => {
+		// セッションからデータを取得
+		let session_Data = null;
+		if (sessionStorage.getItem(key) !== null) {
+			session_Data = sessionStorage.getItem(key);
+			sessionStorage.removeItem(key);
+		}
+		return session_Data;
+	}
 	
 	const transition = (key) => {
 		switch (key) {
 			case "次マップ":
 			comment(['　', key + '画面に遷移します', '　']);
 				const data_Id = document.querySelector("#data_id").textContent;
-				window.location.href = ".." + req + "/Map2?data_Id=" + data_Id, data;
+				const data_Key = sessionStorage.getItem('data_Key');
+
+				window.location.href = ".." + req + "/Map2?data_Id=" + data_Id + "&data_Key=" + data_Key;
 			break;
 			case "良い人":
 				comment(['　', key + '画面に遷移します', '　']);
@@ -362,9 +374,30 @@ window.addEventListener("load", (e) => {
 		return "フィールドA 城A";
 	}
 
+	const party_Data = () => {
+		// パーティーのデータを取得
+		const party_Data = data.querySelectorAll('.member_data');
+		// Objectにして配列にセット
+		let member_Array = new Array;
+		party_Data.forEach(member => {
+			const id = member.querySelector('.member_id').textContent;
+			const data_Id = document.querySelector('#data_id').textContent;
+			const actor_name = member.querySelector('.member_name').textContent;
+			const role = member.querySelector('.member_role').textContent;
+			const exp = member.querySelector('.member_exp').textContent;
+			const lev = member.querySelector('.member_lev').textContent;
+			const hp = member.querySelector('.member_hp').textContent;
+			const mp = member.querySelector('.member_mp').textContent;
+			const wp = member.querySelector('.member_wp').textContent;
+			member_Array.push({ id: id, data_Id: data_Id, actor_name: actor_name, role: role, exp: exp, lev: lev, hp: hp, mp: mp, wp: wp });
+		});
+		alert(member_Array);
+		return member_Array;
+	}
+
 	const save = () => {
 		const url = ".." + req + "/Save";
-		const data = {
+		const save_Data = {
 			data_Id: document.querySelector("#data_id").textContent,
 			party: party_Data(),
 			map_Number: document.querySelector("#map_number").textContent,
@@ -376,14 +409,13 @@ window.addEventListener("load", (e) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify(save_Data),
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log('Success:', data);
-				// window.location.href = url; // ここで画面遷移を行う
+				alert('Success:'+ data);
 				// 結果をSessionに保存
-				sessionStorage.setItem('confirm_Data', data);
+				sessionStorage.setItem('data_Key', data[1]);
 			})
 			.catch((error) => {
 				console.error('Error:', error);
@@ -408,35 +440,6 @@ window.addEventListener("load", (e) => {
 	// 	});
 	// }
 
-	const party_Data = () => {
-		// パーティーのデータを取得
-		const party_Data = data.querySelectorAll('.member_data');
-		// Objectにして配列にセット
-		let member_Array = new Array;
-		party_Data.forEach(member => {
-			const id = member.querySelector('.member_id').textContent;
-			const actor_name = member.querySelector('.member_name').textContent;
-			const role = member.querySelector('.member_role').textContent;
-			const exp = member.querySelector('.member_exp').textContent;
-			const lev = member.querySelector('.member_lev').textContent;
-			const hp = member.querySelector('.member_hp').textContent;
-			const mp = member.querySelector('.member_mp').textContent;
-			const wp = member.querySelector('.member_wp').textContent;
-			member_Array.push({ id: id, actor_name: actor_name, role: role, exp: exp, lev: lev, hp: hp, mp: mp, wp: wp });
-		});
-		alert(member_Array);
-		return member_Array;
-	}
-
-	const load_Session_Data = (key) => {
-		// セッションからデータを取得
-		let session_Data = null;
-		if (sessionStorage.getItem(key) !== null) {
-			session_Data = sessionStorage.getItem(key);
-			sessionStorage.removeItem(key);
-		}
-		return session_Data;
-	}
 		
 	const map_Change = (piece_Name) => {
 		const after = piece_Position(piece_Name);

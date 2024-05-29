@@ -415,10 +415,10 @@ public class MapTestService {
 		// DBに保存されている party情報 を返す
     // TODO Auto-generated method stub
     Actor[] party = new Actor[4];
-		party[0] = new Actor(0, 1, "戦士", "戦士", 1, 0, 1, 100, 0, 0);
-		party[1] = new Actor(1, 1, "勇者", "勇者", 2, 0, 1,80, 20, 0);
-		party[2] = new Actor(2, 1, "僧侶", "僧侶", 3, 0, 1, 60, 30, 0);
-		party[3] = new Actor(3, 1, "魔術師", "魔術師", 4, 0, 1, 30, 50, 0);
+		party[0] = new Actor(0, 1, "戦士", "戦士", 0, 1, 100, 0, 0);
+		party[1] = new Actor(1, 1, "勇者", "勇者", 0, 1,80, 20, 0);
+		party[2] = new Actor(2, 1, "僧侶", "僧侶", 0, 1, 60, 30, 0);
+		party[3] = new Actor(3, 1, "魔術師", "魔術師", 0, 1, 30, 50, 0);
 ;
 		return party;
   }
@@ -427,5 +427,11 @@ public class MapTestService {
 		// TODO Auto-generated method stub
 		Actor[] party = new Actor[]{};
 		return party;
+	}
+
+	public String data_Key(int data_Id) {
+		// TODO Auto-generated method stub
+		// data_infoテーブルよりdata_Idの現在のdata_Keyを取得して返す
+		return "1234567890";
 	}
 }

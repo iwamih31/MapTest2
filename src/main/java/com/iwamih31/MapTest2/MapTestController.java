@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -77,9 +78,9 @@ public class MapTestController {
 
 	@GetMapping("/Start2")
 	public String start2(
-			RedirectAttributes redirectAttributes
-			) {
-				redirectAttributes.addFlashAttribute("data_Id", 1);
+			RedirectAttributes redirectAttributes) {
+		redirectAttributes.addAttribute("data_Id", 1);
+		redirectAttributes.addAttribute("data_Key", 1234567890);
 		return redirect("/Map2");
 	}
 
@@ -126,27 +127,71 @@ public class MapTestController {
 
 	@GetMapping("/Map2")
 	public String map2(
-			@ModelAttribute("data_Id") int data_Id,
-			Model model) {
-		Actor[] party = service.party(data_Id);
-		int[] map_X_Y = service.map_X_Y(data_Id);
-		int map_Number = map_X_Y[0];
-		int x = map_X_Y[1];
-		int y = map_X_Y[2];
-		int[][] map = service.getOriginalMap(map_Number);
-		String center_Image = service.center_Image(data_Id);
-		String[] map_Image_Names = service.map_Image_Names(map_Number);
-		add_View_Data_(model, "map2");
-		model.addAttribute("data_Id", data_Id);
-		model.addAttribute("party", party);
-		model.addAttribute("map_Number", map_Number);
-		model.addAttribute("map", map);
-		model.addAttribute("x", x);
-		model.addAttribute("y", y);
-		model.addAttribute("center_Image", center_Image);
-		model.addAttribute("map_Image_Names", map_Image_Names);
+		@RequestParam("data_Id") int data_Id,
+		@RequestParam("data_Key") String data_Key,
+		Model model) {
+			if (!data_Key.equals(service.data_Key(data_Id))) 
+				return redirect("/");
+			Actor[] party = service.party(data_Id);
+			int[] map_X_Y = service.map_X_Y(data_Id);
+			int map_Number = map_X_Y[0];
+			int x = map_X_Y[1];
+			int y = map_X_Y[2];
+			int[][] map = service.getOriginalMap(map_Number);
+			String center_Image = service.center_Image(data_Id);
+			String[] map_Image_Names = service.map_Image_Names(map_Number);
+			add_View_Data_(model, "map2");
+			model.addAttribute("data_Id", data_Id);
+			model.addAttribute("party", party);
+			model.addAttribute("map_Number", map_Number);
+			model.addAttribute("map", map);
+			model.addAttribute("x", x);
+			model.addAttribute("y", y);
+			model.addAttribute("center_Image", center_Image);
+			model.addAttribute("map_Image_Names", map_Image_Names);
 		return "view2";
 	}
+
+	// @PostMapping("/Save")
+	// public Save_Data save(@RequestBody Save_Data data) {
+	// 		// ここで受け取ったデータを処理します
+
+	// 		System.out.println("Received data_Id: " + data.data_Id);
+	// 		System.out.println("Received party:");
+	// 		for (Actor member : data.party) {
+	// 			System.out.println("  member:");
+	// 			System.out.println("    id: " + member.getId());
+	// 			System.out.println("    data_Id: " + member.getData_Id());
+	// 			System.out.println("    name: " + member.getActor_name());
+	// 			System.out.println("    role: " + member.getRole());
+	// 			System.out.println("    exp: " + member.getExp());
+	// 			System.out.println("    lev: " + member.getLev());
+	// 			System.out.println("    HP: " + member.getHp());
+	// 			System.out.println("    MP: " + member.getMp());
+	// 			System.out.println("    lev: " + member.getWp());
+	// 		}
+	// 		System.out.println("Received map_Number: " + data.map_Number);
+	// 		System.out.println("Received x: " + data.x);
+	// 		System.out.println("Received y: " + data.y);
+
+	// 		// 必要に応じてレスポンスを返します
+	// 		return data;
+	// }
+
+	// @PostMapping("/Save")
+	// public String save(
+	// 		@RequestParam("data_Id") int data_Id,
+	// 		@RequestParam("party") JSONPObject party_JSON,
+	// 		@RequestParam("map_Number") int map_Number,
+	// 		@RequestParam("x") int x,
+	// 		@RequestParam("y") int y,
+	// 		RedirectAttributes redirectAttributes) {
+
+	// 	Actor[] party = service.to_Party(party_JSON);
+	// 	service.save(data_Id, party, map_Number, x, y);
+	// 	redirectAttributes.addFlashAttribute("data_Id", data_Id);
+	// 	return redirect("/Map2");
+	// }
 
 	/** view 表示に必要な属性データをモデルに登録 */
 	private void add_View_Data_(Model model, String template, String title) {

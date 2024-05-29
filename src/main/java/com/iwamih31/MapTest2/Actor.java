@@ -20,13 +20,13 @@ public class Actor {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Integer id;
 
-  private Integer data_id;
+  private Integer data_Id;
 
   private String actor_name;
 
   private String role;
 
-  private Integer no;
+  // private Integer no;
 
   private Integer exp;
 
