@@ -2,12 +2,17 @@ package com.iwamih31.MapTest2;
 
 import javax.sound.sampled.LineUnavailableException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 
 @Service
 public class MapTestService {
+
+	@Autowired
+	private Actor_Repository actor_Repository;
+	private Data_Info_Repository data_Info_Repository;
 
 	private int view_X =15;
 	private int view_Y =15;
@@ -432,6 +437,6 @@ public class MapTestService {
 	public String data_Key(int data_Id) {
 		// TODO Auto-generated method stub
 		// data_infoテーブルよりdata_Idの現在のdata_Keyを取得して返す
-		return "1234567890";
+		return data_Info_Repository.data_Key(data_Id);
 	}
 }
