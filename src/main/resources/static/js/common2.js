@@ -28,10 +28,10 @@ window.addEventListener("load", (e) => {
 	// let mouse_Y = e.clientY;
 	let x = Number(data.querySelector("#x").textContent);
 	let y = Number(data.querySelector("#y").textContent);
-
+	
 	// マップの元データ
 	const map_Table = [];
-
+	
 	const set_map_Table = () => {
 		map_data_rows.forEach(map_data_row => {
 			const map_Table_Row = [];
@@ -42,15 +42,17 @@ window.addEventListener("load", (e) => {
 			map_Table.push(map_Table_Row);
 		});
 	}
-
+	
 	set_map_Table();
+
+
 
 	const inRange = (range, num) => {
 		const half_Range = range / 2;
 	let newNum = num;
 	if(half_Range <num) newNum -= range;
 	if(num < - half_Range) newNum += range;
-return newNum;
+	return newNum;
 	}
 
 	const map_Up = () => {
@@ -172,6 +174,7 @@ return newNum;
 		map_View_Range(row_Size, column_Size);
 	};
 
+	// // パーティーステータス部分自体を全部書き換える
 	// const draw_Party = () => {
 	// 	let label;
 	// 	let value
@@ -225,6 +228,7 @@ return newNum;
 	// 	});
 	// };
 
+	// パーティーステータスのデータ部分のみ書き換える
 	const draw_Party = () => {
 		// パーティーのデータを取得
 		const party_data = data.querySelectorAll('.member_data');
@@ -246,13 +250,12 @@ return newNum;
 		// パーティーのデータを取得
 		const party_data = data.querySelectorAll('.member_data');
 		// 新しいデータで書き換え
-		for (let index = 0; index < party_data.length; index++) {
-			const member = party_data[index];
+		party_data.forEach(member => {
 			const member_hp = member.querySelector('.member_hp');
 			const member_mp = member.querySelector('.member_mp');
 			member_hp.textContent--;
 			member_mp.textContent++;
-		}
+		});
 		draw_Party();
 	}
 
@@ -300,17 +303,22 @@ return newNum;
 	
 	const transition = (key) => {
 		switch (key) {
+			case "次マップ":
+			comment(['　', key + '画面に遷移します', '　']);
+				const data_Id = document.querySelector("#data_id").textContent;
+				window.location.href = ".." + req + "/Map2?data_Id=" + data_Id, data;
+			break;
 			case "良い人":
-				comment(['　', key + 'のページに遷移します', '　']);
+				comment(['　', key + '画面に遷移します', '　']);
 				break;
 			case "モンスター":
-				comment(['　', key + 'のページに遷移します', '　']);
+				comment(['　', key + '画面に遷移します', '　']);
 				break;
 			case "アイテム":
-				comment(['　', key + 'のページに遷移します', '　']);
+				comment(['　', key + '画面に遷移します', '　']);
 				break;
 			case "情報":
-				comment(['　', key + 'のページに遷移します', '　']);
+				comment(['　', key + '画面に遷移します', '　']);
 				break;
 			default:
 				comment(['　', '何も起こりませんでした', '　']);
@@ -354,7 +362,15 @@ return newNum;
 		return "フィールドA 城A";
 	}
 
-	const transition_Parameter = (url, data) => {
+	const save = () => {
+		const url = ".." + req + "/Save";
+		const data = {
+			data_Id: document.querySelector("#data_id").textContent,
+			party: party_Data(),
+			map_Number: document.querySelector("#map_number").textContent,
+			x: document.querySelector("#x").textContent,
+			y: document.querySelector("#y").textContent,
+		};
 		fetch(url, {
 			method: 'POST',
 			headers: {
@@ -362,20 +378,40 @@ return newNum;
 			},
 			body: JSON.stringify(data),
 		})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log('Success:', data);
-			window.location.href = url; // ここで画面遷移を行います
-		})
-		.catch((error) => {
-			console.error('Error:', error);
-		});
+			.then((response) => response.json())
+			.then((data) => {
+				console.log('Success:', data);
+				// window.location.href = url; // ここで画面遷移を行う
+				// 結果をSessionに保存
+				sessionStorage.setItem('confirm_Data', data);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
 	}
+
+	// const transition_Parameter = (url, data) => {
+	// 	fetch(url, {
+	// 		method: 'POST',
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 		},
+	// 		body: JSON.stringify(data),
+	// 	})
+	// 	.then((response) => response.json())
+	// 	.then((data) => {
+	// 		console.log('Success:', data);
+	// 		window.location.href = url; // ここで画面遷移を行う
+	// 	})
+	// 	.catch((error) => {
+	// 		console.error('Error:', error);
+	// 	});
+	// }
 
 	const party_Data = () => {
 		// パーティーのデータを取得
 		const party_Data = data.querySelectorAll('.member_data');
-		
+		// Objectにして配列にセット
 		let member_Array = new Array;
 		party_Data.forEach(member => {
 			const id = member.querySelector('.member_id').textContent;
@@ -386,11 +422,20 @@ return newNum;
 			const hp = member.querySelector('.member_hp').textContent;
 			const mp = member.querySelector('.member_mp').textContent;
 			const wp = member.querySelector('.member_wp').textContent;
-
 			member_Array.push({ id: id, actor_name: actor_name, role: role, exp: exp, lev: lev, hp: hp, mp: mp, wp: wp });
 		});
 		alert(member_Array);
 		return member_Array;
+	}
+
+	const load_Session_Data = (key) => {
+		// セッションからデータを取得
+		let session_Data = null;
+		if (sessionStorage.getItem(key) !== null) {
+			session_Data = sessionStorage.getItem(key);
+			sessionStorage.removeItem(key);
+		}
+		return session_Data;
 	}
 		
 	const map_Change = (piece_Name) => {
@@ -399,14 +444,9 @@ return newNum;
 		const after_X = after[1];
 		const after_Y = after[2];
 		comment(["　", "Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します", "　"]);
-		let data = {
-			data_Id: document.querySelector("#data_id").textContent,
-			party: party_Data(),
-			map_Number: document.querySelector("#map_number").textContent,
-			x: document.querySelector("#x").textContent,
-			y: document.querySelector("#y").textContent,
-		};
-		transition_Parameter(".." + req + "/Map2", data);
+
+		save();
+		transition("次マップ");
 	}
 
 	const piece_Event = (map_Number, x, y) => {
@@ -487,18 +527,9 @@ return newNum;
 		}
 	};
 
-	// const stop = (event_Data) => {
-	// 	alert("stop イベント発動");
-	// 	mouse_X = event_Data.clientX;
-	// 	mouse_Y = event_Data.clientY;
-	// 	alert(`X = ${mouse_X} Y = ${mouse_Y}`);
-	// 	alert("総タイル数 = " + tiles.length);
-	// 	alert("行の列数 = " + map_rows.length);
-	// };
-
-	const position = (event_Data) => {
-		return `X = ${event_Data.clientX} Y = ${event_Data.clientY}`;
-	}
+	// const position = (event_Data) => {
+	// 	return `X = ${event_Data.clientX} Y = ${event_Data.clientY}`;
+	// }
 
 	const button = (button_Name, event_Data) => {
 		switch (button_Name) {
@@ -535,20 +566,6 @@ return newNum;
 		}
 	}
 
-	// center.addEventListener("click", (e) => {
-	// 	if (clicked === false) {
-	// 		clicked = true;
-	// 		mouse_X = e.clientX;
-	// 		mouse_Y = e.clientY;
-	// 		alert(`クリック時の座標 X = ${mouse_X} Y = ${mouse_Y}`);
-	// 		stop(e);
-	// 		move("移動");
-	// 	} else {
-	// 		clicked = false;
-	// 	}
-	// 	// walk();
-	// });
-
 	button_A.addEventListener("click", (e) => { button("A", e); });
 	button_B.addEventListener("click", (e) => { button("B", e); });
 	button_C.addEventListener("click", (e) => { button("C", e); });
@@ -577,6 +594,7 @@ return newNum;
 		}, 1500);
 	}
 
+	// // マウス移動による操作
 	// map.addEventListener("pointermove", (e) => {
 	// 	if (mode === "移動") {
 	// 		console.log(`Mouse position: X = ${e.clientX}, Y = ${e.clientY}`);
@@ -602,14 +620,9 @@ return newNum;
 		};
 	});
 
+	load_Session_Data('confirm_Data');
 	draw_Map();
 	draw_Party();
-
-
-	// if (mode === ""){
-	// 	walk();
-	// }
-	// map_View_Range(row_Size, column_Size);
 	
 });
 

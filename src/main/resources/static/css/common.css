@@ -330,7 +330,7 @@ nav button,
 .member {
 	border: solid white medium;
 	border-radius: 1vmin;
-	padding: 0 1rem;
+	padding: 0 0.5rem;
 }
 
 .member {
