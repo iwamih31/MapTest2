@@ -56,32 +56,32 @@ window.addEventListener("load", (e) => {
 	}
 
 	const map_Up = () => {
+		y = inRange(map_Y, y-1);
 		up.classList.add("click_button");
 		down.classList.remove("click_button");
 		left.classList.remove("click_button");
 		right.classList.remove("click_button");
-		y = inRange(map_Y, y-1);
 	}
 	const map_Down = () => {
+		y = inRange(map_Y, y + 1);
 		up.classList.remove("click_button");
 		down.classList.add("click_button");
 		left.classList.remove("click_button");
 		right.classList.remove("click_button");
-		y = inRange(map_Y, y + 1);
 	}
 	const map_Left = () => {
+		x = inRange(map_X, x - 1);
 		up.classList.remove("click_button");
 		down.classList.remove("click_button");
 		left.classList.add("click_button");
 		right.classList.remove("click_button");
-		x = inRange(map_X, x - 1);
 	}
 	const map_right = () => {
+		x = inRange(map_X, x + 1);
 		up.classList.remove("click_button");
 		down.classList.remove("click_button");
 		left.classList.remove("click_button");
 		right.classList.add("click_button");
-		x = inRange(map_X, x + 1);
 	}
 
 	const map_stop = () => {
@@ -113,49 +113,49 @@ window.addEventListener("load", (e) => {
 
 	const castle1 = (piece_Number) => {
 		switch(piece_Number) {
-			case 0: return piece_Info("砂", 1);// 通常（床）
-			case 1: return piece_Info("草", 2);// // 魔物出現率高（草）
-			case 2: return piece_Info("山", 0);// 通行不可(壁)
+			case 0: return piece_Info("砂", 1); // 通常（床）
+			case 1: return piece_Info("草", 2); // // 魔物出現率高（草）
+			case 2: return piece_Info("山", 0); // 通行不可(壁)
 			case 3: return piece_Info("海", 0); // 通行不可(水)
 			case 4: return piece_Info("洞窟", 4); // イベント（下り階段）
 			case 5: return piece_Info("城", 4); // イベント（上り階段）
-			case 6: return piece_Info("山", 2);// 魔物出現率高 (通れる山)
+			case 6: return piece_Info("山", 2); // 魔物出現率高 (通れる山)
 			case 7: return piece_Info("海", 4); // イベント（宝箱）
 			case 8: return piece_Info("草", 4); // イベント（見えない出口）
-			case 9: return piece_Info("海",  4);// イベント (神の御加護)
-			default: return piece_Info("砂", 0);// 通行不可(通れない道)
+			case 9: return piece_Info("海",  4); // イベント (神の御加護)
+			default : return piece_Info("砂", 0); // 通行不可(通れない道)
 		}
 	}
 
 	const castle2 = (piece_Number) => {
 		switch(piece_Number) {
-			case 0 : return piece_Info("砂",  1); // 通路
-			case 1 : return piece_Info("草",  3); // ダメージ（バリア）
-			case 2 : return piece_Info("山",  0); // 壁
-			case 3 : return piece_Info("海",  0); // 空
-			case 4 : return piece_Info("城",  4); // 階段（上り）
-			case 5 : return piece_Info("洞窟",  4); // 階段（下り）
-			case 6 : return piece_Info("草",  7); // イベント
-			case 7 : return piece_Info("勇者",  0); // 王様
-			case 8 : return piece_Info("海",  4); // 扉（出口）
-			case 9 : return piece_Info("闇",  7); // 穴
-			default:return piece_Info("砂",  0);
+			case 0: return piece_Info("砂",  1); // 通路
+			case 1: return piece_Info("草",  3); // ダメージ（バリア）
+			case 2: return piece_Info("山",  0); // 壁
+			case 3: return piece_Info("海",  0); // 空
+			case 4: return piece_Info("城",  4); // 階段（上り）
+			case 5: return piece_Info("洞窟",  4); // 階段（下り）
+			case 6: return piece_Info("草",  7); // イベント
+			case 7: return piece_Info("勇者",  0); // 王様
+			case 8: return piece_Info("海",  4); // 扉（出口）
+			case 9: return piece_Info("闇",  7); // 穴
+			default: return piece_Info("砂",  0);
 		}
 	}
 
 	const dungeon = (piece_Number) => {
 		switch(piece_Number) {
-				case 0 : return piece_Info("闇",  1); // 通路
-				case 1 : return piece_Info("草",  2);
-				case 2 : return piece_Info("山",  0); // 壁
-				case 3 : return piece_Info("海",  0); // 水
-				case 4 : return piece_Info("洞窟",  4);
-				case 5 : return piece_Info("洞窟",  5); // 階段（入口）
-				case 6 : return piece_Info("山",  2);
-				case 7 : return piece_Info("宝箱",  7);
-				case 8 : return piece_Info("草",  8); // 扉（出口）
-				case 9 : return piece_Info("城",  9);
-				default:return piece_Info("山",  1); // 通れる壁
+			case 0: return piece_Info("砂", 1);// 通常（床）
+			case 1: return piece_Info("草", 2);// // 魔物出現率高（草）
+			case 2: return piece_Info("闇", 0);// 通行不可(壁)
+			case 3: return piece_Info("海", 0); // 通行不可(泉)
+			case 4: return piece_Info("洞窟", 4); // イベント（下り階段）
+			case 5: return piece_Info("城", 4); // イベント（上り階段）
+			case 6: return piece_Info("山", 5); // イベント（宝箱）
+			case 7: return piece_Info("海", 7); // イベント（回復）
+			case 8: return piece_Info("海", 6); // イベント（脱出）
+			case 9: return piece_Info("草", 5); // イベント（落とし穴）
+			default: return piece_Info("闇", 2); // 魔物出現率高 (通れる壁)
 		}
 	}
 
@@ -205,13 +205,13 @@ window.addEventListener("load", (e) => {
 	}
 
 	const draw_Map = () => {
+		const current_map = shift_Map(map_Table, x, y);
+		const map_Images = to_Map_Images(current_map, map_Number);
 		// map の子要素を全部消去
 		while (map.firstChild) {
 			map.removeChild(map.firstChild);
 		}
 		// 子要素作成用のデータを作成
-		const current_map = shift_Map(map_Table, x, y);
-		const map_Images = to_Map_Images(current_map, map_Number);
 		// 新しいmap の子要素を作成
 		map_Images.forEach(map_Images_Row => {
 			const map_row = document.createElement('div');
@@ -341,7 +341,7 @@ window.addEventListener("load", (e) => {
 	}
 
 	const barrier_Check = (role) => {
-		if (role < 1) mode = "○";
+		if (role < 1) move("○");
 		console.log(role);
 		console.log(mode);
 		// 衝突音を鳴らす
@@ -399,7 +399,7 @@ window.addEventListener("load", (e) => {
 			case "城A 1階 洞窟A": return [ 1, -3, 6 ];
 			case "城A 1階 洞窟B": return [ 1, 4, 2 ];
 			case "城A 2階 階段A": return [ 3, 1, -1 ];
-			case "洞窟A 地下1階 入口": return [ 2, 7, 7 ];
+			case "洞窟A 地下1階 入口": return [ 2, -3, 6 ];
 			case "洞窟B 地下1階 入口": return [ 2, 4, 2 ];
 			default: return [ 0, 0, 0 ];
 		}
@@ -499,10 +499,14 @@ window.addEventListener("load", (e) => {
 		const after_Map_Number = after_Map_X_Y[0];
 		const after_X = after_Map_X_Y[1];
 		const after_Y = after_Map_X_Y[2];
-		comment(["　", "Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します", "　"]);
-
+		//サーバーのデータベースに保存
 		save(after_Map_Number, after_X, after_Y);
-		transition("次マップ");
+		comment(["　", "Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します", "　"]);
+		// 画面遷移
+		setTimeout(() => {
+			transition("次マップ");
+		}, 1500);
+		
 	}
 
 	const piece_Event = (map_Number, x, y) => {
@@ -520,9 +524,13 @@ window.addEventListener("load", (e) => {
 		let event_Rate = 0;
 		if (role === 1) event_Rate = 30;
 		if (role === 2) event_Rate = 60;
-		if (role === 4) setTimeout(() => {
-			piece_Event(map_Number, x, y);
-		}, 1500);
+		if (role === 4) { 
+			move("○"); 
+			setTimeout(() => {
+				piece_Event(map_Number, x, y);
+			}, 1500);
+			return
+		}
 		if (random(1,100) < event_Rate) {
 			move("○");
 			let event_Name = "";
@@ -537,7 +545,7 @@ window.addEventListener("load", (e) => {
 		}
 	}
 	
-	const action = (mode) => {
+	const action = (mode, x, y) => {
 		// 移動先の Role を取得
 		const destination = after_XY(mode, x, y)
 		const after_MAP = shift_Map(map_Table, destination.X, destination.Y);
@@ -548,13 +556,15 @@ window.addEventListener("load", (e) => {
 		if (result === "○") {
 			map_stop();
 		} else {
+			// スタミナ消費とMP回復
+			languor();
+			// ポジション移動
 			if (result === "上") map_Up();
 			if (result === "下") map_Down();
 			if (result === "左") map_Left();
 			if (result === "右") map_right();
 			// 移動後のマップを描画
 			draw_Map();
-			languor();
 			// 移動先のイベント決定
 			walk_Event(after_Role);
 		}
@@ -587,27 +597,14 @@ window.addEventListener("load", (e) => {
 	// 	return `X = ${event_Data.clientX} Y = ${event_Data.clientY}`;
 	// }
 
-	const button = (button_Name, event_Data) => {
-		switch (button_Name) {
-			case "A":
-			case "B":
-			case "C":
-				case "D":
-				case "○":
-				alert(button_Name + "ボタンが押されました");
-				// alert_Position(event_Data);
-				break;
-			case "上":
-			case "下":
-			case "左":
-			case "右":
-				move(button_Name);
-				break;
-			default:
-				break;
-		}
-		console.log(button_Name + "ボタンが押されました");
-		// console.log(position(event_Data));
+	const search = () => {
+		draw_Map();
+		languor();
+		// イベント決定
+		const current_Map = shift_Map(map_Table, x, y);
+		const center = center_XY(current_Map);
+		const role = map_Piece(map_Number, current_Map[center.Y][center.X]).role;
+			walk_Event(role);
 	}
 
 	const move = (destination) => {
@@ -622,11 +619,40 @@ window.addEventListener("load", (e) => {
 		}
 	}
 
+	const button = (button_Name, event_Data) => {
+		switch (button_Name) {
+			case "A":
+			case "B":
+			case "C":
+			case "D":
+				alert(button_Name + "ボタンが押されました");
+				// alert_Position(event_Data);
+				break;
+			case "○":
+				search();
+				break;
+			case "上":
+			case "下":
+			case "左":
+			case "右":
+				move(button_Name);
+				break;
+			default:
+				break;
+		}
+		console.log(button_Name + "ボタンが押されました");
+		// console.log(position(event_Data));
+	}
+
 	button_A.addEventListener("click", (e) => { button("A", e); });
 	button_B.addEventListener("click", (e) => { button("B", e); });
 	button_C.addEventListener("click", (e) => { button("C", e); });
 	button_D.addEventListener("click", (e) => { button("D", e); });
 	center.addEventListener("click", (e) => { button("○", e); });
+	up.addEventListener("click", (e) => { button("上", e); });
+	down.addEventListener("click", (e) => { button("下", e); });
+	left.addEventListener("click", (e) => { button("左", e); });
+	right.addEventListener("click", (e) => { button("右", e); });
 	up.addEventListener("mouseover", (e) => { button("上", e); });
 	down.addEventListener("mouseover", (e) => { button("下", e); });
 	left.addEventListener("mouseover", (e) => { button("左", e); });
@@ -640,14 +666,14 @@ window.addEventListener("load", (e) => {
 		const current_Mode = mode;
 		// mouse_X = e.clientX;
 		// mouse_Y = e.clientY;
-		setTimeout(() => {
+		// setTimeout(() => {
 			const loop = setInterval(() => {
-				action(mode);
 				if (current_Mode !== mode) {
 					clearInterval(loop);
 				}
-			}, 1500);
-		}, 1500);
+				action(mode, x, y);
+			}, 2000);
+		// }, 1000);
 	}
 
 	// // マウス移動による操作
