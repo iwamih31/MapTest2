@@ -366,11 +366,12 @@ window.addEventListener("load", (e) => {
 	const transition = (key) => {
 		switch (key) {
 			case "次マップ":
-			comment(['　', key + '画面に遷移します', '　']);
+				comment(['　', key + '画面に遷移します', '　']);
+				// 画面内の data_Id を取得
 				const data_Id = document.querySelector("#data_id").textContent;
 				// セッションに保存された data_Key を取得
 				const data_Key = sessionStorage.getItem('data_Key');
-
+				// 画面遷移（GET）
 				window.location.href = ".." + req + "/Map2?data_Id=" + data_Id + "&data_Key=" + data_Key;
 			break;
 			case "良い人":
