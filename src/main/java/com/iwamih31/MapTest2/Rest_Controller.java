@@ -61,8 +61,12 @@ public class Rest_Controller {
 		System.out.println("Received x: " + data.x);
 		System.out.println("Received y: " + data.y);
 
+		// データベース更新
+		service.save(data);
+
 		// レスポンスを返す
-		List<String> response_Data = Arrays.asList(data.data_Id, "1234567890");
+		String data_Key = service.data_Key(Integer.parseInt(data.data_Id));
+		List<String> response_Data = Arrays.asList(data.data_Id, data_Key);
     return new ResponseEntity<>(response_Data, HttpStatus.OK);
 	}
 }

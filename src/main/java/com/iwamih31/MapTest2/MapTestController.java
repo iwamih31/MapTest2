@@ -79,7 +79,7 @@ public class MapTestController {
 	public String start2(
 			RedirectAttributes redirectAttributes) {
 				int data_Id = 1;
-				service.save(data_Id, service.party(data_Id), 0, 0, 0);
+				service.save(data_Id, service.new_Party(data_Id), 0, 0, 0);
 		redirectAttributes.addAttribute("data_Id", data_Id);
 		redirectAttributes.addAttribute("data_Key", service.data_Key(data_Id));
 		return redirect("/Map2");
@@ -128,16 +128,20 @@ public class MapTestController {
 
 	@GetMapping("/Map2")
 	public String map2(
-		@RequestParam("data_Id") int data_Id,
+		@RequestParam("data_Id") Integer data_Id,
 		@RequestParam("data_Key") String data_Key,
 		Model model) {
-			if (!data_Key.equals(service.data_Key(data_Id))) 
-				return redirect("/");
-			Actor[] party = service.party(data_Id);
-			int[] map_X_Y = service.map_X_Y(data_Id);
-			int map_Number = map_X_Y[0];
-			int x = map_X_Y[1];
-			int y = map_X_Y[2];
+			// data_Keyが一致しない場合、トップページに戻る
+			if (!data_Key.equals(service.data_Key(data_Id))) return redirect("/");
+
+			// data_Id と data_Key を使用して画面へ渡すデータを取得
+			// Actor[] party = service.party(data_Id);
+			Actor[] party = service.new_Party(data_Id);
+			Data_Info data_Info = service.data_Info(data_Id);
+			int map_Number = data_Info.getMap_Number();
+			System.out.println("map_Number = " + map_Number);
+			int x = data_Info.getX();
+			int y = data_Info.getY();
 			int[][] map = service.getOriginalMap(map_Number);
 			String center_Image = service.center_Image(data_Id);
 			String[] map_Image_Names = service.map_Image_Names(map_Number);

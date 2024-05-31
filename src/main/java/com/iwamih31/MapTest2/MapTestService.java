@@ -1,5 +1,7 @@
 package com.iwamih31.MapTest2;
 
+import java.util.List;
+
 import javax.sound.sampled.LineUnavailableException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ public class MapTestService {
 	private Actor_Repository actor_Repository;
 	@Autowired
 	private Data_Info_Repository data_Info_Repository;
+	@Autowired
+	private Party_Info_Repository party_Info_Repository;
 
 	private int view_X =15;
 	private int view_Y =15;
@@ -399,8 +403,11 @@ public class MapTestService {
 
   public int[] map_X_Y(int data_Id) {
     // DBに保存されている map_Number, X, Y を配列で返す 
-		// TODO Auto-generated method stub
-		int[] map_X_Y = {0, 0, 0}; // 仮データ
+		Data_Info data = data_Info_Repository.getReferenceById(data_Id);
+		int map_Number = data.getMap_Number();
+		int x = map_Number = data.getX();
+		int y = map_Number = data.getY();
+		int[] map_X_Y = {map_Number, x, y};
 		return map_X_Y;
   }
 
@@ -417,7 +424,7 @@ public class MapTestService {
 		data_Info_Repository.save(data_Info);
   }
 
-  private String data_Key() {
+  String data_Key() {
 		// TODO Auto-generated method stub
 		// 新しいデータKeyを作成して返す
 		return "1234567890";
@@ -430,15 +437,24 @@ public class MapTestService {
 		return center_Image;
   }
 
+	public Actor[] new_Party(int data_Id) {
+		Actor[] party = new Actor[4];
+		party[0] = new Actor(0, data_Id, "戦士", "戦士", 0, 1, 100, 0, 0);
+		party[1] = new Actor(1, data_Id, "勇者", "勇者", 0, 1, 80, 20, 0);
+		party[2] = new Actor(2, data_Id, "僧侶", "僧侶", 0, 1, 60, 30, 0);
+		party[3] = new Actor(3, data_Id, "魔術師", "魔術師", 0, 1, 30, 50, 0);
+		return party;
+	}
+
   public Actor[] party(int data_Id) {
 		// DBに保存されている party情報 を返す
-    // TODO Auto-generated method stub
-    Actor[] party = new Actor[4];
-		party[0] = new Actor(0, 1, "戦士", "戦士", 0, 1, 100, 0, 0);
-		party[1] = new Actor(1, 1, "勇者", "勇者", 0, 1,80, 20, 0);
-		party[2] = new Actor(2, 1, "僧侶", "僧侶", 0, 1, 60, 30, 0);
-		party[3] = new Actor(3, 1, "魔術師", "魔術師", 0, 1, 30, 50, 0);
-;
+
+		List<Party_Info> party_Info = party_Info_Repository.list(data_Id);
+		Actor[] party = new Actor[party_Info.size()];
+		for (int i = 0; i < party.length; i++) {
+			Integer actor_Id = party_Info.get(i).getActor_Id();
+			party[i] = actor_Repository.getReferenceById(actor_Id);
+		}
 		return party;
   }
 
@@ -451,5 +467,32 @@ public class MapTestService {
 	public String data_Key(int data_Id) {
 		// data_infoテーブルよりdata_Idの現在のdata_Keyを取得して返す
 		return data_Info_Repository.getReferenceById(data_Id).getData_Key();
+	}
+
+	public void save(Save_Data data) {
+		int data_Id = Integer.parseInt(data.data_Id);
+		String data_Key = data_Key(data_Id);
+		int map_Number = Integer.parseInt(data.map_Number);
+		int x = Integer.parseInt(data.x);
+		int y = Integer.parseInt(data.y);
+		// data_Info テーブルを更新
+		Data_Info data_Info = new Data_Info(data_Id, data_Key, map_Number, x, y);
+		data_Info_Repository.save(data_Info);
+		Actor[] party = data.party;
+		for (int index = 0; index < party.length; index++) {
+			Actor member = party[index];
+			// actor テーブルを更新
+			actor_Repository.save(member);
+			// party_info テーブルを更新
+			Party_Info party_Info = new Party_Info();
+			party_Info.setData_Id(data_Id);
+			party_Info.setNo(index);
+			party_Info.setActor_Id(member.getId());
+			party_Info_Repository.save(party_Info);
+		}
+	}
+
+	public Data_Info data_Info(Integer data_Id) {
+		return data_Info_Repository.getReferenceById(data_Id);
 	}
 }

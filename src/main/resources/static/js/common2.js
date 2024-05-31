@@ -91,19 +91,71 @@ window.addEventListener("load", (e) => {
 		right.classList.remove("click_button");
 	}
 
+	const piece_Info = (image_Name, role_Number) => {
+		return { image_Name: image_Name, role: role_Number };
+	}
+
 	const field = (piece_Number) => {
 		switch (Number(piece_Number)) {
-			case 0: return {image_Name:"砂", role:2}; // 魔物出現率高
-			case 1: return {image_Name:"草", role:1}; // 通常
-			case 2: return {image_Name:"山", role:0}; // 通行不可
-			case 3: return {image_Name:"海", role:0}; // 通行不可
-			case 4: return {image_Name:"洞窟", role:4}; // イベント（洞窟）
-			case 5: return {image_Name:"城", role:4}; // イベント（村）
-			case 6: return {image_Name:"山", role:2}; // 魔物出現率高 (通れる山)
-			case 7: return {image_Name:"砂", role:0}; // 通行不可(通れない道)
-			case 8: return {image_Name:"城", role:4}; // イベント（神殿）
-			case 9: return {image_Name:"城", role:4}; // イベント（城）
-			default: return {image_Name:"闇", role:0}; // 通行不可(通れない道)
+			case 0: return piece_Info("砂", 2); // 魔物出現率高
+			case 1: return piece_Info("草", 1); // 通常
+			case 2: return piece_Info("山", 0); // 通行不可
+			case 3: return piece_Info("海", 0); // 通行不可
+			case 4: return piece_Info("洞窟", 4); // イベント（洞窟）
+			case 5: return piece_Info("城", 4); // イベント（村）
+			case 6: return piece_Info("山", 2); // 魔物出現率高 (通れる山)
+			case 7: return piece_Info("砂", 0); // 通行不可(通れない道)
+			case 8: return piece_Info("城", 4); // イベント（神殿）
+			case 9: return piece_Info("城", 4); // イベント（城）
+			default: return piece_Info("闇", 0); // 通行不可(通れない道)
+		}
+	}
+
+	const castle1 = (piece_Number) => {
+		switch(piece_Number) {
+			case 0: return piece_Info("砂", 1);// 通常（床）
+			case 1: return piece_Info("草", 2);// // 魔物出現率高（草）
+			case 2: return piece_Info("山", 0);// 通行不可(壁)
+			case 3: return piece_Info("海", 0); // 通行不可(水)
+			case 4: return piece_Info("洞窟", 4); // イベント（下り階段）
+			case 5: return piece_Info("城", 4); // イベント（上り階段）
+			case 6: return piece_Info("山", 2);// 魔物出現率高 (通れる山)
+			case 7: return piece_Info("海", 4); // イベント（宝箱）
+			case 8: return piece_Info("草", 4); // イベント（見えない出口）
+			case 9: return piece_Info("海",  4);// イベント (神の御加護)
+			default: return piece_Info("砂", 0);// 通行不可(通れない道)
+		}
+	}
+
+	const castle2 = (piece_Number) => {
+		switch(piece_Number) {
+			case 0 : return piece_Info("砂",  1); // 通路
+			case 1 : return piece_Info("草",  3); // ダメージ（バリア）
+			case 2 : return piece_Info("山",  0); // 壁
+			case 3 : return piece_Info("海",  0); // 空
+			case 4 : return piece_Info("城",  4); // 階段（上り）
+			case 5 : return piece_Info("洞窟",  4); // 階段（下り）
+			case 6 : return piece_Info("草",  7); // イベント
+			case 7 : return piece_Info("勇者",  0); // 王様
+			case 8 : return piece_Info("海",  4); // 扉（出口）
+			case 9 : return piece_Info("闇",  7); // 穴
+			default:return piece_Info("砂",  0);
+		}
+	}
+
+	const dungeon = (piece_Number) => {
+		switch(piece_Number) {
+				case 0 : return piece_Info("闇",  1); // 通路
+				case 1 : return piece_Info("草",  2);
+				case 2 : return piece_Info("山",  0); // 壁
+				case 3 : return piece_Info("海",  0); // 水
+				case 4 : return piece_Info("洞窟",  4);
+				case 5 : return piece_Info("洞窟",  5); // 階段（入口）
+				case 6 : return piece_Info("山",  2);
+				case 7 : return piece_Info("宝箱",  7);
+				case 8 : return piece_Info("草",  8); // 扉（出口）
+				case 9 : return piece_Info("城",  9);
+				default:return piece_Info("山",  1); // 通れる壁
 		}
 	}
 
@@ -301,21 +353,22 @@ window.addEventListener("load", (e) => {
 		return Math.floor(Math.random() * (max + 1 - min)) + min;
 	}
 
-	const load_Session_Data = (key) => {
-		// セッションからデータを取得
-		let session_Data = null;
-		if (sessionStorage.getItem(key) !== null) {
-			session_Data = sessionStorage.getItem(key);
-			sessionStorage.removeItem(key);
-		}
-		return session_Data;
-	}
+	// const load_Session_Data = (key) => {
+	// 	// セッションからデータを取得
+	// 	let session_Data = null;
+	// 	if (sessionStorage.getItem(key) !== null) {
+	// 		session_Data = sessionStorage.getItem(key);
+	// 		sessionStorage.removeItem(key);
+	// 	}
+	// 	return session_Data;
+	// }
 	
 	const transition = (key) => {
 		switch (key) {
 			case "次マップ":
 			comment(['　', key + '画面に遷移します', '　']);
 				const data_Id = document.querySelector("#data_id").textContent;
+				// セッションに保存された data_Key を取得
 				const data_Key = sessionStorage.getItem('data_Key');
 
 				window.location.href = ".." + req + "/Map2?data_Id=" + data_Id + "&data_Key=" + data_Key;
@@ -395,14 +448,14 @@ window.addEventListener("load", (e) => {
 		return member_Array;
 	}
 
-	const save = () => {
+	const save = (map_Number, x_Number, y_Number) => {
 		const url = ".." + req + "/Save";
 		const save_Data = {
 			data_Id: document.querySelector("#data_id").textContent,
 			party: party_Data(),
-			map_Number: document.querySelector("#map_number").textContent,
-			x: document.querySelector("#x").textContent,
-			y: document.querySelector("#y").textContent,
+			map_Number: map_Number,
+			x: x_Number,
+			y: y_Number,
 		};
 		fetch(url, {
 			method: 'POST',
@@ -414,7 +467,7 @@ window.addEventListener("load", (e) => {
 			.then((response) => response.json())
 			.then((data) => {
 				alert('Success:'+ data);
-				// 結果をSessionに保存
+				// 結果データの要素[1]（data_Key）を Session に保存
 				sessionStorage.setItem('data_Key', data[1]);
 			})
 			.catch((error) => {
@@ -442,13 +495,13 @@ window.addEventListener("load", (e) => {
 
 		
 	const map_Change = (piece_Name) => {
-		const after = piece_Position(piece_Name);
-		const after_Map_Number = after[0];
-		const after_X = after[1];
-		const after_Y = after[2];
+		const after_Map_X_Y = piece_Position(piece_Name);
+		const after_Map_Number = after_Map_X_Y[0];
+		const after_X = after_Map_X_Y[1];
+		const after_Y = after_Map_X_Y[2];
 		comment(["　", "Map_Number = " + after_Map_Number + ", X = " + after_X + ", Y = " + after_Y  + " に移動します", "　"]);
 
-		save();
+		save(after_Map_Number, after_X, after_Y);
 		transition("次マップ");
 	}
 
@@ -623,7 +676,7 @@ window.addEventListener("load", (e) => {
 		};
 	});
 
-	load_Session_Data('confirm_Data');
+	// load_Session_Data('data_Key');
 	draw_Map();
 	draw_Party();
 	
