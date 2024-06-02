@@ -445,7 +445,7 @@ window.addEventListener("load", (e) => {
 			const wp = member.querySelector('.member_wp').textContent;
 			member_Array.push({ id: id, data_Id: data_Id, actor_name: actor_name, role: role, exp: exp, lev: lev, hp: hp, mp: mp, wp: wp });
 		});
-		alert(member_Array);
+		// alert(member_Array);
 		return member_Array;
 	}
 
@@ -467,7 +467,8 @@ window.addEventListener("load", (e) => {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				alert('Success:'+ data);
+				console.log('Success:', data);
+				// alert('Success:'+ data);
 				// 結果データの要素[1]（data_Key）を Session に保存
 				sessionStorage.setItem('data_Key', data[1]);
 			})
