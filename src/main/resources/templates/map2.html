@@ -12,8 +12,22 @@
 		<!-- インフォメーションパネル -->
 		<div id="information">
 			インフォメーション
+			<br>
+			<br>
+			<!-- GOLD -->
+			<div id="gold">
+				ゴールド: 100G
+			</div>
+			<br>
+			<div id="item">
+				アイテム: 
+				<br>
+				　薬草
+			</div>
 		</div>
+		<!-- センターコンテナー -->
 		<div id="center_container">
+			<!-- パーティーステータス -->
 			<div id="party" class="flex_space_between">
 				<th:block th:each="member,status : ${party}" th:object="${member}">
 					<div class="member">
@@ -35,6 +49,7 @@
 				</div>
 				<img class="center_piece" th:src="@{'/image_map/' + ${center_Image} + '.png'}">
 			</div>
+			<!-- メッセージ表示パネル -->
 			<div id="message">
 				<div>　</div>
 				<div>----- メッセージ -----</div>

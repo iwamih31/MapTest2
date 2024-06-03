@@ -362,34 +362,66 @@ window.addEventListener("load", (e) => {
 	// 	}
 	// 	return session_Data;
 	// }
+
+
+	const event = (path) => {
+		const url = ".." + req + "/" + path;
+		const save_Data = {
+			data_Id: document.querySelector("#data_id").textContent,
+			party: party_Data(),
+			map_Number: map_Number,
+			x: x,
+			y: y,
+		};
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(save_Data),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log('Success:', data);
+				// alert('Success:'+ data);
+				// 結果データの要素[1]（data_Key）を Session に保存
+				sessionStorage.setItem('data_Key', data[1]);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
 	
 	const transition = (key) => {
+		let path = "";
 		switch (key) {
 			case "次マップ":
-				comment(['　', key + '画面に遷移します', '　']);
-				// 画面内の data_Id を取得
-				const data_Id = document.querySelector("#data_id").textContent;
-				// セッションに保存された data_Key を取得
-				const data_Key = sessionStorage.getItem('data_Key');
-				// 画面遷移（GET）
-				window.location.href = ".." + req + "/Map2?data_Id=" + data_Id + "&data_Key=" + data_Key;
-			break;
+				path = "Map2";
+				break;
 			case "良い人":
-				comment(['　', key + '画面に遷移します', '　']);
+				path = "Good_Person";
+				event(path);
 				break;
 			case "モンスター":
-				comment(['　', key + '画面に遷移します', '　']);
+				path = "";
 				break;
 			case "アイテム":
-				comment(['　', key + '画面に遷移します', '　']);
+				path = "";
 				break;
 			case "情報":
-				comment(['　', key + '画面に遷移します', '　']);
+				path = "";
 				break;
 			default:
-				comment(['　', '何も起こりませんでした', '　']);
-				break;
+				comment(['　', key + '???', '　']);
+				return;
 		}
+		comment(['　', key + '画面に遷移します', '　']);
+		// 画面内の data_Id を取得
+		const data_Id = document.querySelector("#data_id").textContent;
+		// セッションに保存された data_Key を取得
+		const data_Key = sessionStorage.getItem('data_Key');
+		// 画面遷移（GET）
+		window.location.href = ".." + req + "/" + path + "?data_Id=" + data_Id + "&data_Key=" + data_Key;
 	}
 
 	const piece_Position = (piece_Name) => {
@@ -668,14 +700,12 @@ window.addEventListener("load", (e) => {
 		const current_Mode = mode;
 		// mouse_X = e.clientX;
 		// mouse_Y = e.clientY;
-		// setTimeout(() => {
-			const loop = setInterval(() => {
-				if (current_Mode !== mode) {
-					clearInterval(loop);
-				}
-				action(mode, x, y);
-			}, 2000);
-		// }, 1000);
+		const loop = setInterval(() => {
+			if (current_Mode !== mode) {
+				clearInterval(loop);
+			}
+			action(mode, x, y);
+		}, 2000);
 	}
 
 	// // マウス移動による操作
