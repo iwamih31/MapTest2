@@ -42,24 +42,11 @@ public class Rest_Controller {
 
 	@PostMapping("/Save")
 	public ResponseEntity<List<String>> save(@RequestBody Save_Data data) {
+
 		// 受け取ったデータを処理
-		System.out.println("Received data_Id: " + data.data_Id);
-		System.out.println("Received party:");
-		for (Actor member : data.party) {
-			System.out.println("  member:");
-			System.out.println("    id: " + member.getId());
-			System.out.println("    data_Id: " + member.getData_Id());
-			System.out.println("    name: " + member.getActor_Name());
-			System.out.println("    role: " + member.getRole());
-			System.out.println("    exp: " + member.getExp());
-			System.out.println("    lev: " + member.getLev());
-			System.out.println("    HP: " + member.getHp());
-			System.out.println("    MP: " + member.getMp());
-			System.out.println("    lev: " + member.getWp());
-		}
-		System.out.println("Received map_Number: " + data.map_Number);
-		System.out.println("Received x: " + data.x);
-		System.out.println("Received y: " + data.y);
+
+		// データをコンソールに出力
+		service.console_Out(data);
 
 		// データベース更新
 		service.save(data);
@@ -69,4 +56,26 @@ public class Rest_Controller {
 		List<String> response_Data = Arrays.asList(data.data_Id, data_Key);
     return new ResponseEntity<>(response_Data, HttpStatus.OK);
 	}
+
+	@PostMapping("/Good_Person")
+	public ResponseEntity<List<String>> good_Person(@RequestBody Save_Data data) {
+
+		// 受け取ったデータを処理
+		for (Actor member : data.party) {
+			member.setHp(service.max_HP(member));
+			member.setMp(service.max_MP(member));
+		}
+
+		// データをコンソールに出力
+		service.console_Out(data);
+
+		// データベース更新
+		service.save(data);
+
+		// レスポンスを返す
+		String data_Key = service.data_Key(Integer.parseInt(data.data_Id));
+		List<String> response_Data = Arrays.asList(data.data_Id, data_Key);
+		return new ResponseEntity<>(response_Data, HttpStatus.OK);
+	}
+
 }

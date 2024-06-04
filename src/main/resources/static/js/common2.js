@@ -366,7 +366,7 @@ window.addEventListener("load", (e) => {
 
 	const event = (path) => {
 		const url = ".." + req + "/" + path;
-		const save_Data = {
+		const send_Data = {
 			data_Id: document.querySelector("#data_id").textContent,
 			party: party_Data(),
 			map_Number: map_Number,
@@ -378,7 +378,7 @@ window.addEventListener("load", (e) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(save_Data),
+			body: JSON.stringify(send_Data),
 		})
 			.then((response) => response.json())
 			.then((data) => {

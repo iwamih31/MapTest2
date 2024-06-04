@@ -18,6 +18,8 @@ public class MapTestService {
 	private Data_Info_Repository data_Info_Repository;
 	@Autowired
 	private Party_Info_Repository party_Info_Repository;
+	@Autowired
+	private Role_Repository role_Repository;
 
 	private int view_X =15;
 	private int view_Y =15;
@@ -506,4 +508,53 @@ public class MapTestService {
 	public Data_Info data_Info(Integer data_Id) {
 		return data_Info_Repository.getReferenceById(data_Id);
 	}
+
+	public void console_Out(Save_Data data) {
+		System.out.println("Received data_Id: " + data.data_Id);
+		System.out.println("Received party:");
+		for (Actor member : data.party) {
+			System.out.println("  member:");
+			System.out.println("    id: " + member.getId());
+			System.out.println("    data_Id: " + member.getData_Id());
+			System.out.println("    name: " + member.getActor_Name());
+			System.out.println("    role: " + member.getRole());
+			System.out.println("    exp: " + member.getExp());
+			System.out.println("    lev: " + member.getLev());
+			System.out.println("    HP: " + member.getHp());
+			System.out.println("    MP: " + member.getMp());
+			System.out.println("    lev: " + member.getWp());
+		}
+		System.out.println("Received map_Number: " + data.map_Number);
+		System.out.println("Received x: " + data.x);
+		System.out.println("Received y: " + data.y);
+	}
+
+	public Integer max_HP(Actor actor) {
+		int ap = ap(actor.getRole());
+		return actor.getLev() * ap;
+	}
+
+	public Integer max_MP(Actor actor) {
+		int ep = ep(actor.getRole());
+		return actor.getLev() * ep;
+	}
+
+  private int ep(String role_Name) {
+		Role role = role_Repository.role(role_Name);
+		if (role == null) return 1;
+		return role.getEp();
+	}
+
+	private int ap(String role_Name) {
+		Role role = role_Repository.role(role_Name);
+		if (role == null) return 1;
+		return role.getAp();
+	}
+
+	private int sp(String role_Name) {
+		Role role = role_Repository.role(role_Name);
+		if (role == null) return 1;
+		return role.getSp();
+	}
+
 }
