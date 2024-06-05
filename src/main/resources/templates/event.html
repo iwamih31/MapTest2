@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<!-- library フラグメントの定義（JavaScript／CSS） -->
+	<th:block th:fragment="library">
+		<link rel="stylesheet" th:href="@{/css/main.css}">
+	</th:block>
+
+	<!-- main フラグメントの定義（メインコンテンツ） -->
+	<div th:fragment="main" class="flex_space_between">
+		<!-- 本体部分 -->
+		<!-- インフォメーションパネル -->
+		<div id="information">
+			インフォメーション
+			<br>
+			<br>
+			<!-- GOLD -->
+			<div id="gold">
+				ゴールド: 100G
+			</div>
+			<br>
+			<div id="item">
+				アイテム: 
+				<br>
+				　薬草
+			</div>
+		</div>
+		<!-- センターコンテナー -->
+		<div id="center_container">
+			<!-- パーティーステータス -->
+			<div id="party" class="flex_space_between">
+				<th:block th:each="member,status : ${party}" th:object="${member}">
+					<div class="member">
+						<div class="center">
+							<span th:id="'member_name' + ${status.index}">[[*{actor_Name}]]</span></div>
+						<div class="flex_space_between"><span>Lvl:</span>
+							<span th:id="'member_lev' + ${status.index}">[[*{lev}]]</span> </div>
+						<div class="flex_space_between"><span>HP:</span>
+							<span th:id="'member_hp' + ${status.index}">[[*{hp}]]</span></div>
+						<div class="flex_space_between"><span>MP:</span>
+							<span th:id="'member_mp' + ${status.index}">[[*{mp}]]</span></div>
+					</div>
+				</th:block>
+			</div>
+			<!-- センターパネル -->
+			<div id="center_panel" class="relative">
+				<!-- イメージパネル -->
+				<div id="image">
+					<img class="back_image" th:src="@{'/image/' + ${back_Image} + '.png'}">
+				</div>
+				<img class="event_image" th:src="@{'/image/' + ${event_Image} + '.png'}">
+			</div>
+			<!-- メッセージ表示パネル -->
+			<div id="message">
+				<div>　</div>
+				<div>----- メッセージ -----</div>
+				<div>　</div>
+			</div>
+			<br>
+		</div>
+		<!-- コマンドパネル -->
+		<div id="command">
+			コマンド
+			<div class="bottom_10">
+				<!-- コントローラー -->
+				<table id="controller">
+					<tr>
+						<td><button id="A">Ａ</button></td>
+						<td><button id="up"> ▲ </button></td>
+						<td><button id="B">Ｂ</button></td>
+					</tr>
+					<tr>
+						<td><button id="left">◀</button></td>
+						<td><button id="center">〇</button></td>
+						<td><button id="right">▶</button></td>
+					</tr>
+					<tr>
+						<td><button id="C">Ｃ</button></td>
+						<td><button id="down"> ▼ </button></td>
+						<td><button id="D">Ｄ</button></td>
+					</tr>
+				</table>
+				<a th:href="@{/main}">メインページへ</a>
+			</div>
+		</div>
+		<!-- データ -->
+		<div id="data" class="display_none">
+			<div id="req">[[${req}]]</div>
+			<div id="data_id">[[${data_Id}]]</div>
+			<div id="party_data">
+				<th:block th:each="member : ${party}" th:object="${member}">
+					<div class="member_data">
+						<div class="member_id">[[*{id}]]</div>
+						<div class="member_name">[[*{actor_Name}]]</div>
+						<div class="member_role">[[*{role}]]</div>
+						<div class="member_exp">[[*{exp}]]</div>
+						<div class="member_lev">[[*{lev}]]</div>
+						<div class="member_hp">[[*{hp}]]</div>
+						<div class="member_mp">[[*{mp}]]</div>
+						<div class="member_wp">[[*{wp}]]</div>
+					</div>
+				</th:block>
+			</div>
+			<div id="count">[[${count}]]</div>
+		</div>
+	</div>
+</html>

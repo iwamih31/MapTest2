@@ -169,22 +169,11 @@ public class MapTestController {
 		// data_Id と data_Key を使用して画面へ渡すデータを取得
 		// Actor[] party = service.party(data_Id);
 		Actor[] party = service.new_Party(data_Id);
-		Data_Info data_Info = service.data_Info(data_Id);
-		int map_Number = data_Info.getMap_Number();
-		int x = data_Info.getX();
-		int y = data_Info.getY();
-		int[][] map = service.getOriginalMap(map_Number);
-		String center_Image = service.center_Image(data_Id);
-		String[] map_Image_Names = service.map_Image_Names(map_Number);
-		add_View_Data_(model, "good_Person");
+		add_View_Data_(model, "event");
 		model.addAttribute("data_Id", data_Id);
 		model.addAttribute("party", party);
-		model.addAttribute("map_Number", map_Number);
-		model.addAttribute("map", map);
-		model.addAttribute("x", x);
-		model.addAttribute("y", y);
-		model.addAttribute("center_Image", center_Image);
-		model.addAttribute("map_Image_Names", map_Image_Names);
+		model.addAttribute("back_Image", "フィールド");
+		model.addAttribute("event_Image", "良い人");
 		return "view2";
 	}
 

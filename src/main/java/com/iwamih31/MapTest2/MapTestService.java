@@ -491,10 +491,10 @@ public class MapTestService {
 		// data_Info テーブルを更新
 		Data_Info data_Info = new Data_Info(data_Id, data_Key, map_Number, x, y);
 		data_Info_Repository.save(data_Info);
+		// actor テーブルを更新
 		Actor[] party = data.party;
 		for (int index = 0; index < party.length; index++) {
 			Actor member = party[index];
-			// actor テーブルを更新
 			actor_Repository.save(member);
 			// party_info テーブルを更新
 			Party_Info party_Info = new Party_Info();

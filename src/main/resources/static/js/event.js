@@ -1,0 +1,8 @@
+/**
+ *
+ */
+
+
+window.addEventListener("load", (e) => {
+
+});

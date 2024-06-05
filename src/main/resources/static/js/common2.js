@@ -404,13 +404,16 @@ window.addEventListener("load", (e) => {
 				break;
 			case "モンスター":
 				path = "";
-				break;
+				comment(['　', key + '画面に遷移します', '　']);
+				return;
 			case "アイテム":
 				path = "";
-				break;
+				comment(['　', key + '画面に遷移します', '　']);
+				return;
 			case "情報":
 				path = "";
-				break;
+				comment(['　', key + '画面に遷移します', '　']);
+				return;
 			default:
 				comment(['　', key + '???', '　']);
 				return;
@@ -422,6 +425,7 @@ window.addEventListener("load", (e) => {
 		const data_Key = sessionStorage.getItem('data_Key');
 		// 画面遷移（GET）
 		window.location.href = ".." + req + "/" + path + "?data_Id=" + data_Id + "&data_Key=" + data_Key;
+
 	}
 
 	const piece_Position = (piece_Name) => {
@@ -653,6 +657,31 @@ window.addEventListener("load", (e) => {
 		}
 	}
 
+	const get_Message = (count) => {
+		const url = ".." + req + "/Message";
+		const send_Data = {
+			data_Id: document.querySelector("#data_id").textContent,
+			count: count
+		};
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(send_Data),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log('Success:', data);
+				// alert('Success:'+ data);
+				// 結果データを コメント欄に表示
+				comment(data);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	}
+
 	const button = (button_Name, event_Data) => {
 		switch (button_Name) {
 			case "A":
@@ -663,7 +692,12 @@ window.addEventListener("load", (e) => {
 				// alert_Position(event_Data);
 				break;
 			case "○":
-				search();
+				const count = document.querySelector("#count").textContent;
+				if (count){
+					get_Message(count);
+				} else {
+					search();
+				}
 				break;
 			case "上":
 			case "下":
