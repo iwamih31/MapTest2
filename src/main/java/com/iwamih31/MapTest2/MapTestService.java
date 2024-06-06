@@ -556,5 +556,20 @@ public class MapTestService {
 		if (role == null) return 1;
 		return role.getSp();
 	}
+	
+	public void register_Message(String string) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'register_Message'");
+	}
+	
+  public String back_Image(String event_name) {
+		// TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'back_Image'");
+  }
+	
+		public List<String> message(int data_Id, int count) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Unimplemented method 'message'");
+		}
 
 }

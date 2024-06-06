@@ -292,19 +292,22 @@ nav button,
 
 .back_image {
 	position: absolute;
-	left: -36svh;
-	width: 33svw;
-	height: 63svh;
+	left: -19svw;
+	top: 3svh;
+	width: 38svw;
+	height: 57svh;
 	padding: 0;
-	margin: auto;
+	margin: 0;
 }
 
 .event_image {
 	position: absolute;
-	bottom: 30%;
-	left: -16svh;
+	top: 3svh;;
+	left: -30svh;
+		/* width: 30svw; */
+			height: 57svh;
 	padding: 0;
-	margin: auto;
+	margin: 0;
 }
 
 .map_row {

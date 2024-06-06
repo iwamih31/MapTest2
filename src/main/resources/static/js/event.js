@@ -2,7 +2,3 @@
  *
  */
 
-
-window.addEventListener("load", (e) => {
-
-});

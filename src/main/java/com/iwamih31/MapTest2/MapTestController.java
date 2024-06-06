@@ -135,8 +135,8 @@ public class MapTestController {
 			if (!data_Key.equals(service.data_Key(data_Id))) return redirect("/");
 
 			// data_Id と data_Key を使用して画面へ渡すデータを取得
-			// Actor[] party = service.party(data_Id);
-			Actor[] party = service.new_Party(data_Id);
+			Actor[] party = service.party(data_Id);
+			// Actor[] party = service.new_Party(data_Id);
 			Data_Info data_Info = service.data_Info(data_Id);
 			int map_Number = data_Info.getMap_Number();
 			System.out.println("map_Number = " + map_Number);
@@ -163,18 +163,21 @@ public class MapTestController {
 			@RequestParam("data_Key") String data_Key,
 			Model model) {
 		// data_Keyが一致しない場合、トップページに戻る
-		if (!data_Key.equals(service.data_Key(data_Id)))
-			return redirect("/");
-
-		// data_Id と data_Key を使用して画面へ渡すデータを取得
-		// Actor[] party = service.party(data_Id);
-		Actor[] party = service.new_Party(data_Id);
+		if (!data_Key.equals(service.data_Key(data_Id))) return redirect("/");
+		String event_name = "良い人";
+		String back_Image = service.back_Image(event_name);
+		// 使用するメッセージをDBに登録
+		service.register_Message(event_name);
+		// data_Id を使用して画面へ渡すデータを取得
+		Actor[] party = service.party(data_Id);
+		// Actor[] party = service.new_Party(data_Id);
 		add_View_Data_(model, "event");
 		model.addAttribute("data_Id", data_Id);
 		model.addAttribute("party", party);
-		model.addAttribute("back_Image", "フィールド");
-		model.addAttribute("event_Image", "良い人");
-		return "view2";
+		// model.addAttribute("back_Image", "フィールド");
+		model.addAttribute("back_Image", back_Image);
+		model.addAttribute("event_Image", event_name);
+		return "view3";
 	}
 
 	// @PostMapping("/Save")

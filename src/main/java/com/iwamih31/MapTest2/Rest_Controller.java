@@ -58,7 +58,7 @@ public class Rest_Controller {
 	}
 
 	@PostMapping("/Good_Person")
-	public ResponseEntity<List<String>> good_Person(@RequestBody int[] data) {
+	public ResponseEntity<List<String>> good_Person(@RequestBody Save_Data data) {
 		// 受け取ったデータを処理
 		for (Actor member : data.party) {
 			member.setHp(service.max_HP(member));
@@ -75,19 +75,16 @@ public class Rest_Controller {
 	}
 
 	@PostMapping("/Message")
-	public ResponseEntity<List<String>> message(@RequestBody Save_Data data) {
+	public ResponseEntity<List<String>> message(@RequestBody int[] data) {
 		// 受け取ったデータを処理
-		for (Actor member : data.party) {
-			member.setHp(service.max_HP(member));
-			member.setMp(service.max_MP(member));
-		}
+		int data_Id = data[0];
+		int count = data[1];
 		// データをコンソールに出力
-		service.console_Out(data);
-		// データベースを更新
-		service.save(data);
+		System.out.println("Received data_Id: " + data_Id);
+		System.out.println("Received count: " + count);
+		// データベースからメッセージのリストを取得
+		List<String> response_Data = service.message(data_Id, count);
 		// レスポンスを返す
-		String data_Key = service.data_Key(Integer.parseInt(data.data_Id));
-		List<String> response_Data = Arrays.asList(data.data_Id, data_Key);
 		return new ResponseEntity<>(response_Data, HttpStatus.OK);
 	}
 
