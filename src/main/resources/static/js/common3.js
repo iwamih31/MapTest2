@@ -5,14 +5,9 @@
 window.addEventListener("load", (e) => {
 
 	const req = document.querySelector("#req").textContent;
-	// const map = document.querySelector("#map");
 	const party = document.querySelector("#party");
 	const data = document.querySelector("#data");
 	const message = document.querySelector("#message");
-	// const map_data_rows = data.querySelectorAll(".map_data_row");
-	// const map_Number = Number(data.querySelector("#map_number").textContent);
-	// const map_X = map_data_rows[0].length;
-	// const map_Y = map_data_rows.length;
 	const button_A = document.querySelector("#A");
 	const button_B = document.querySelector("#B");
 	const button_C = document.querySelector("#C");
@@ -56,28 +51,24 @@ window.addEventListener("load", (e) => {
 	}
 
 	const cursor_Up = () => {
-		y = inRange(map_Y, y-1);
 		up.classList.add("click_button");
 		down.classList.remove("click_button");
 		left.classList.remove("click_button");
 		right.classList.remove("click_button");
 	}
 	const cursor_Down = () => {
-		y = inRange(map_Y, y + 1);
 		up.classList.remove("click_button");
 		down.classList.add("click_button");
 		left.classList.remove("click_button");
 		right.classList.remove("click_button");
 	}
 	const cursor_Left = () => {
-		x = inRange(map_X, x - 1);
 		up.classList.remove("click_button");
 		down.classList.remove("click_button");
 		left.classList.add("click_button");
 		right.classList.remove("click_button");
 	}
 	const cursor_right = () => {
-		x = inRange(map_X, x + 1);
 		up.classList.remove("click_button");
 		down.classList.remove("click_button");
 		left.classList.remove("click_button");
@@ -313,6 +304,7 @@ window.addEventListener("load", (e) => {
 				// alert('Success:'+ data);
 				// 結果データを コメント欄に表示
 				comment(data);
+
 			})
 			.catch((error) => {
 				console.error('Error:', error);
@@ -347,6 +339,7 @@ window.addEventListener("load", (e) => {
 				const count = document.querySelector("#count").textContent;
 				if (count){
 					get_Message(count);
+					count--;
 				} else {
 					transition("次マップ");
 				}

@@ -1,6 +1,13 @@
 package com.iwamih31.MapTest2;
 
-public class Save_Data {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor 
+class Save_Data {
   public String data_Id;
   public Actor[] party;
   public String map_Number;

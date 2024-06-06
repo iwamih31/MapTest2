@@ -429,16 +429,22 @@ public class MapTestService {
   }
 
   public void save(int data_Id, Actor[] party, int map_Number, int x, int y) {
-		// 各DBを更新
-		// actor テーブルに登録されている各メンバーのステータスを更新
-		for (Actor member : party) {
-			actor_Repository.save(member);
-		}
 		// 新しいdata_keyを作成
 		String data_Key = data_Key();
-		// data_info テーブルの data_Key, map_Number, x, y を書き換え
-		Data_Info data_Info = new Data_Info(data_Id,data_Key,map_Number,x,y);
+		// data_Info テーブルを更新
+		Data_Info data_Info = new Data_Info(data_Id, data_Key, map_Number, x, y);
 		data_Info_Repository.save(data_Info);
+		// actor テーブルを更新
+		for (int index = 0; index < party.length; index++) {
+			Actor member = party[index];
+			actor_Repository.save(member);
+			// party_info テーブルを更新
+			Party_Info party_Info = new Party_Info();
+			party_Info.setData_Id(data_Id);
+			party_Info.setNo(index);
+			party_Info.setActor_Id(member.getId());
+			party_Info_Repository.save(party_Info);
+		}
   }
 
   String data_Key() {
@@ -456,10 +462,10 @@ public class MapTestService {
 
 	public Actor[] new_Party(int data_Id) {
 		Actor[] party = new Actor[4];
-		party[0] = new Actor(0, data_Id, "戦士", "戦士", 0, 1, 100, 0, 0);
-		party[1] = new Actor(1, data_Id, "勇者", "勇者", 0, 1, 80, 20, 0);
-		party[2] = new Actor(2, data_Id, "僧侶", "僧侶", 0, 1, 60, 30, 0);
-		party[3] = new Actor(3, data_Id, "魔術師", "魔術師", 0, 1, 30, 50, 0);
+		party[0] = new Actor(1, data_Id, "戦士", "戦士", 0, 1, 100, 0, 0);
+		party[1] = new Actor(2, data_Id, "勇者", "勇者", 0, 1, 80, 20, 0);
+		party[2] = new Actor(3, data_Id, "僧侶", "僧侶", 0, 1, 60, 30, 0);
+		party[3] = new Actor(4, data_Id, "魔術師", "魔術師", 0, 1, 30, 50, 0);
 		return party;
 	}
 
@@ -471,6 +477,7 @@ public class MapTestService {
 		for (int i = 0; i < party.length; i++) {
 			Integer actor_Id = party_Info.get(i).getActor_Id();
 			party[i] = actor_Repository.getReferenceById(actor_Id);
+			console_Out(party[i]);
 		}
 		return party;
   }
@@ -488,25 +495,11 @@ public class MapTestService {
 
 	public void save(Save_Data data) {
 		int data_Id = Integer.parseInt(data.data_Id);
-		String data_Key = data_Key(data_Id);
 		int map_Number = Integer.parseInt(data.map_Number);
 		int x = Integer.parseInt(data.x);
 		int y = Integer.parseInt(data.y);
-		// data_Info テーブルを更新
-		Data_Info data_Info = new Data_Info(data_Id, data_Key, map_Number, x, y);
-		data_Info_Repository.save(data_Info);
-		// actor テーブルを更新
 		Actor[] party = data.party;
-		for (int index = 0; index < party.length; index++) {
-			Actor member = party[index];
-			actor_Repository.save(member);
-			// party_info テーブルを更新
-			Party_Info party_Info = new Party_Info();
-			party_Info.setData_Id(data_Id);
-			party_Info.setNo(index);
-			party_Info.setActor_Id(member.getId());
-			party_Info_Repository.save(party_Info);
-		}
+		save(data_Id, party, map_Number, x, y);
 	}
 
 	public Data_Info data_Info(Integer data_Id) {
@@ -518,19 +511,23 @@ public class MapTestService {
 		System.out.println("Received party:");
 		for (Actor member : data.party) {
 			System.out.println("  member:");
-			System.out.println("    id: " + member.getId());
-			System.out.println("    data_Id: " + member.getData_Id());
-			System.out.println("    name: " + member.getActor_Name());
-			System.out.println("    role: " + member.getRole());
-			System.out.println("    exp: " + member.getExp());
-			System.out.println("    lev: " + member.getLev());
-			System.out.println("    HP: " + member.getHp());
-			System.out.println("    MP: " + member.getMp());
-			System.out.println("    lev: " + member.getWp());
+			console_Out(member);
 		}
 		System.out.println("Received map_Number: " + data.map_Number);
 		System.out.println("Received x: " + data.x);
 		System.out.println("Received y: " + data.y);
+	}
+
+	public void console_Out(Actor actor) {
+			System.out.println("    id: " + actor.getId());
+			System.out.println("    data_Id: " + actor.getData_Id());
+			System.out.println("    name: " + actor.getActor_Name());
+			System.out.println("    role: " + actor.getRole());
+			System.out.println("    exp: " + actor.getExp());
+			System.out.println("    lev: " + actor.getLev());
+			System.out.println("    HP: " + actor.getHp());
+			System.out.println("    MP: " + actor.getMp());
+			System.out.println("    lev: " + actor.getWp());
 	}
 
 	public Integer max_HP(Actor actor) {
@@ -574,16 +571,50 @@ public class MapTestService {
   }
 	
 	public List<String> message(int count) {
-		// TODO Auto-generated method stub
+		// 返却用 List を初期化
 		List<String> message = new ArrayList<>();
-		// count に応じてデータベースからメッセージを取得
+		// 表示するメッセージを初期化
+		String full_Message = "----- コメント -----";
+		// count が残っている場合
+		if (0 < count) {
+			// データベースからcount に対応したメッセージを取得
+			full_Message = message_Repository.getReferenceById(count).getText();
+		}
 		// 文字数に応じて List にセット
+		int limit_Size = word_Count();
+		int message_Size = full_Message.length();
 			// 制限数以下の場合
+			if (message_Size <= limit_Size) {
 				// 2個目にメッセージ、1と3個目は"　"をセット
-			// 制限数を超える場合
+				message.add("　");
+				message.add(full_Message);
+				message.add("　");
+			} else {
+				// 制限数を超える場合
 				// 制限数毎に分割し、1個目から順番にセット。3個目が無い場合は"　"をセット
+				for (;;) {
+					if (full_Message.length() == 0) {
+						if (message.size() <= 3) {
+							message.add("　");
+						}
+						return message;
+					}
+					String line ="";
+					if ( limit_Size < full_Message.length()) {
+						line = full_Message.substring(0,limit_Size);
+					} else {
+						line = full_Message;
+					}
+					message.add(line);
+					full_Message = full_Message.replace(line, "");
+				}
+			}
 		// Listを返す
 		return message;
+	}
+
+	private int word_Count() {
+		return 70;
 	}
 
 	public List<String> first_Message() {

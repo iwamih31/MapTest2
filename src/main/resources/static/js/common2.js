@@ -418,9 +418,12 @@ window.addEventListener("load", (e) => {
 				comment(['　', key + '???', '　']);
 				return;
 		}
-		comment(['　', key + '画面に遷移します', '　']);
+		setTimeout(() => {
+			comment(['　', key + '画面に遷移します', '　']);
+		}, 1500);
 		// 画面内の data_Id を取得
 		const data_Id = document.querySelector("#data_id").textContent;
+		alert(data_Id);
 		// セッションに保存された data_Key を取得
 		const data_Key = sessionStorage.getItem('data_Key');
 		// 画面遷移（GET）
@@ -692,12 +695,7 @@ window.addEventListener("load", (e) => {
 				// alert_Position(event_Data);
 				break;
 			case "○":
-				const count = document.querySelector("#count").textContent;
-				if (count){
-					get_Message(count);
-				} else {
 					search();
-				}
 				break;
 			case "上":
 			case "下":
