@@ -59,6 +59,10 @@ public class Rest_Controller {
 
 	@PostMapping("/Good_Person")
 	public ResponseEntity<List<String>> good_Person(@RequestBody Save_Data data) {
+		// イベント名指定
+		String event_name = "良い人";
+		// 使用するメッセージをDBに登録
+		service.register_Message(event_name);
 		// 受け取ったデータを処理
 		for (Actor member : data.party) {
 			member.setHp(service.max_HP(member));

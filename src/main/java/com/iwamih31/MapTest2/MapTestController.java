@@ -164,13 +164,12 @@ public class MapTestController {
 			Model model) {
 		// data_Keyが一致しない場合、トップページに戻る
 		if (!data_Key.equals(service.data_Key(data_Id))) return redirect("/");
+		// 画面へ渡すデータを作成
 		String event_name = "良い人";
 		String back_Image = service.back_Image(event_name);
-		// 使用するメッセージをDBに登録
-		service.register_Message(event_name);
-		// data_Id を使用して画面へ渡すデータを取得
 		Actor[] party = service.party(data_Id);
 		// Actor[] party = service.new_Party(data_Id);
+		// 画面へ渡すデータを model にセット
 		add_View_Data_(model, "event");
 		model.addAttribute("data_Id", data_Id);
 		model.addAttribute("party", party);
