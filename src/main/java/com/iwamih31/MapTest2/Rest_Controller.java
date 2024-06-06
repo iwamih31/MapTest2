@@ -87,7 +87,7 @@ public class Rest_Controller {
 		System.out.println("Received data_Id: " + data_Id);
 		System.out.println("Received count: " + count);
 		// データベースからメッセージのリストを取得
-		List<String> response_Data = service.message(data_Id, count);
+		List<String> response_Data = service.message(count);
 		// レスポンスを返す
 		return new ResponseEntity<>(response_Data, HttpStatus.OK);
 	}

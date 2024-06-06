@@ -6,6 +6,7 @@ import java.util.List;
 import javax.sound.sampled.LineUnavailableException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
@@ -21,6 +22,8 @@ public class MapTestService {
 	private Party_Info_Repository party_Info_Repository;
 	@Autowired
 	private Role_Repository role_Repository;
+	@Autowired
+	private Message_Repository message_Repository;
 
 	private int view_X =15;
 	private int view_Y =15;
@@ -570,22 +573,23 @@ public class MapTestService {
 		}
   }
 	
-		public List<String> message(int data_Id, int count) {
-			// TODO Auto-generated method stub
-			List<String> message = new ArrayList<>();
-			// count に応じてデータベースからメッセージを取得
-			// 文字数に応じて List にセット
-				// 制限数以下の場合
-					// 2個目にメッセージ、1と3個目は"　"をセット
-				// 制限数を超える場合
-					// 制限数毎に分割し、1個目から順番にセット。3個目が無い場合は"　"をセット
-			// Listを返す
-			return message;
-		}
+	public List<String> message(int count) {
+		// TODO Auto-generated method stub
+		List<String> message = new ArrayList<>();
+		// count に応じてデータベースからメッセージを取得
+		// 文字数に応じて List にセット
+			// 制限数以下の場合
+				// 2個目にメッセージ、1と3個目は"　"をセット
+			// 制限数を超える場合
+				// 制限数毎に分割し、1個目から順番にセット。3個目が無い場合は"　"をセット
+		// Listを返す
+		return message;
+	}
 
-		public List<String> first_Message(Integer data_Id) {
-			// TODO Auto-generated method stub
-			throw new UnsupportedOperationException("Unimplemented method 'first_Message'");
-		}
+	public List<String> first_Message() {
+		int last_Id = (int) message_Repository.count();
+		List<String> first_Message = message(last_Id);
+		return first_Message;
+	}
 
 }
