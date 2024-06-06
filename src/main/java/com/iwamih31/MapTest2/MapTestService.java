@@ -563,8 +563,10 @@ public class MapTestService {
 	}
 	
   public String back_Image(String event_name) {
-		// TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'back_Image'");
+    switch (event_name) {
+			case "良い人": return "フィールド";
+			default: return "エアー";
+		}
   }
 	
 		public List<String> message(int data_Id, int count) {
