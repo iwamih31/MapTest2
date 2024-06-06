@@ -52,9 +52,9 @@
 			</div>
 			<!-- メッセージ表示パネル -->
 			<div id="message">
-				<div>　</div>
-				<div>----- メッセージ -----</div>
-				<div>　</div>
+				<th:block th:each="line : ${message}">
+					<div>[[${line}]]</div>
+				</th:block>
 			</div>
 			<br>
 		</div>

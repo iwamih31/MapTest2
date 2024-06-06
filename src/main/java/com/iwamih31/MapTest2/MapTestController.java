@@ -1,5 +1,7 @@
 package com.iwamih31.MapTest2;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -167,13 +169,14 @@ public class MapTestController {
 		// 画面へ渡すデータを作成
 		String event_name = "良い人";
 		String back_Image = service.back_Image(event_name);
+		List<String> message = service.first_Message(data_Id);
 		Actor[] party = service.party(data_Id);
 		// Actor[] party = service.new_Party(data_Id);
 		// 画面へ渡すデータを model にセット
 		add_View_Data_(model, "event");
 		model.addAttribute("data_Id", data_Id);
+		model.addAttribute("message", message);
 		model.addAttribute("party", party);
-		// model.addAttribute("back_Image", "フィールド");
 		model.addAttribute("back_Image", back_Image);
 		model.addAttribute("event_Image", event_name);
 		return "view3";
