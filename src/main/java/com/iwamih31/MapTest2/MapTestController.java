@@ -136,7 +136,7 @@ public class MapTestController {
 			// data_Keyが一致しない場合、トップページに戻る
 			if (!data_Key.equals(service.data_Key(data_Id))) return redirect("/");
 
-			// data_Id と data_Key を使用して画面へ渡すデータを取得
+			// data_Id を使用して画面へ渡すデータを取得
 			Actor[] party = service.party(data_Id);
 			// Actor[] party = service.new_Party(data_Id);
 			Data_Info data_Info = service.data_Info(data_Id);

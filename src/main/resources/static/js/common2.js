@@ -383,9 +383,9 @@ window.addEventListener("load", (e) => {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log('Success:', data);
-				// alert('Success:'+ data);
 				// 結果データの要素[1]（data_Key）を Session に保存
 				sessionStorage.setItem('data_Key', data[1]);
+				alert('Success:data_Id=' + data[0] + ', data_Key=' + data[1]);
 			})
 			.catch((error) => {
 				console.error('Error:', error);
@@ -504,16 +504,16 @@ window.addEventListener("load", (e) => {
 			},
 			body: JSON.stringify(save_Data),
 		})
-			.then((response) => response.json())
-			.then((data) => {
-				console.log('Success:', data);
-				// alert('Success:'+ data);
-				// 結果データの要素[1]（data_Key）を Session に保存
-				sessionStorage.setItem('data_Key', data[1]);
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
+		.then((response) => response.json())
+		.then((data) => {
+			console.log('Success:', data);
+			// alert('Success:'+ data);
+			// 結果データの要素[1]（data_Key）を Session に保存
+			sessionStorage.setItem('data_Key', data[1]);
+		})
+		.catch((error) => {
+			console.error('Error:', error);
+		});
 	}
 
 	// const transition_Parameter = (url, data) => {
@@ -552,8 +552,11 @@ window.addEventListener("load", (e) => {
 
 	const piece_Event = (map_Number, x, y) => {
 		const piece_Name = next_Map_Name(map_Number, x, y);
-		if (piece_Name === "") transition(piece_Name);
-		map_Change(piece_Name);
+		if (piece_Name === "") {
+			transition(piece_Name);
+		} else {
+			map_Change(piece_Name);
+		}
 	};
 
 	const comment_Clear = () => {

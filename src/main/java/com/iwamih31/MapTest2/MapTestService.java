@@ -433,19 +433,28 @@ public class MapTestService {
 		String data_Key = data_Key();
 		// data_Info テーブルを更新
 		Data_Info data_Info = new Data_Info(data_Id, data_Key, map_Number, x, y);
-		data_Info_Repository.save(data_Info);
+		data_Info_Repository.saveAndFlush(data_Info);
 		// actor テーブルを更新
 		for (int index = 0; index < party.length; index++) {
 			Actor member = party[index];
-			actor_Repository.save(member);
+			actor_Repository.saveAndFlush(member);
 			// party_info テーブルを更新
 			Party_Info party_Info = new Party_Info();
 			party_Info.setData_Id(data_Id);
-			party_Info.setNo(index);
+			party_Info.setNo(index + 1);
 			party_Info.setActor_Id(member.getId());
-			party_Info_Repository.save(party_Info);
+			party_Info_Repository.saveAndFlush(party_Info);
 		}
   }
+
+	public void save(Save_Data data) {
+		int data_Id = Integer.parseInt(data.data_Id);
+		int map_Number = Integer.parseInt(data.map_Number);
+		int x = Integer.parseInt(data.x);
+		int y = Integer.parseInt(data.y);
+		Actor[] party = data.party;
+		save(data_Id, party, map_Number, x, y);
+	}
 
   String data_Key() {
 		// TODO Auto-generated method stub
@@ -490,16 +499,9 @@ public class MapTestService {
 
 	public String data_Key(int data_Id) {
 		// data_infoテーブルよりdata_Idの現在のdata_Keyを取得して返す
-		return data_Info_Repository.getReferenceById(data_Id).getData_Key();
-	}
-
-	public void save(Save_Data data) {
-		int data_Id = Integer.parseInt(data.data_Id);
-		int map_Number = Integer.parseInt(data.map_Number);
-		int x = Integer.parseInt(data.x);
-		int y = Integer.parseInt(data.y);
-		Actor[] party = data.party;
-		save(data_Id, party, map_Number, x, y);
+		String data_Key = data_Info_Repository.getReferenceById(data_Id).getData_Key();
+		System.out.println("data_Key =  " + data_Key);
+		return data_Key;
 	}
 
 	public Data_Info data_Info(Integer data_Id) {

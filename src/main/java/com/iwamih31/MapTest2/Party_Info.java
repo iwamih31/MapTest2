@@ -26,7 +26,7 @@ public class Party_Info {
   // 順番
   @Column(name = "no", nullable = true)
   private Integer no;
-  // x座標
+  // actorID
   @Column(name = "actor_id", nullable = true)
   private Integer actor_Id;
 }
