@@ -474,17 +474,16 @@ window.addEventListener("load", (e) => {
 		let member_Array = new Array;
 		party_Data.forEach(member => {
 			const id = member.querySelector('.member_id').textContent;
-			const data_Id = document.querySelector('#data_id').textContent;
-			const actor_name = member.querySelector('.member_name').textContent;
+			const actor_Name = member.querySelector('.member_name').textContent;
 			const role = member.querySelector('.member_role').textContent;
 			const exp = member.querySelector('.member_exp').textContent;
 			const lev = member.querySelector('.member_lev').textContent;
 			const hp = member.querySelector('.member_hp').textContent;
 			const mp = member.querySelector('.member_mp').textContent;
 			const wp = member.querySelector('.member_wp').textContent;
-			member_Array.push({ id: id, data_Id: data_Id, actor_name: actor_name, role: role, exp: exp, lev: lev, hp: hp, mp: mp, wp: wp });
-		});
-		// alert(member_Array);
+			member_Array.push({ id: id, actor_Name: actor_Name, role: role, exp: exp, lev: lev, hp: hp, mp: mp, wp: wp });
+			});
+		alert("member_Array.length = " + member_Array.length);
 		return member_Array;
 	}
 
@@ -771,7 +770,7 @@ window.addEventListener("load", (e) => {
 
 	// load_Session_Data('data_Key');
 	draw_Map();
-	draw_Party();
+	// draw_Party();
 	
 });
 

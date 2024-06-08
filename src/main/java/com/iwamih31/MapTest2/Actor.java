@@ -20,8 +20,6 @@ public class Actor {
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Integer id;
-  @Column(name = "data_id", nullable = false)
-  private Integer data_Id;
   @Column(name = "actor_name", nullable = true)
   private String actor_Name;
   @Column(nullable = true)

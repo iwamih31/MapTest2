@@ -435,17 +435,39 @@ public class MapTestService {
 		Data_Info data_Info = new Data_Info(data_Id, data_Key, map_Number, x, y);
 		data_Info_Repository.saveAndFlush(data_Info);
 		// actor テーブルを更新
+		for (Actor member : party) {
+			actor_Repository.saveAndFlush(member);
+		}
+  }
+
+
+
+	public void party_Info(int data_Id, Actor[] party) {
+		// 引数のdata_Idを持つパーティー情報を削除
+		release_Party(data_Id);
 		for (int index = 0; index < party.length; index++) {
 			Actor member = party[index];
-			actor_Repository.saveAndFlush(member);
+			Integer actor_Id = member.getId();
 			// party_info テーブルを更新
 			Party_Info party_Info = new Party_Info();
 			party_Info.setData_Id(data_Id);
 			party_Info.setNo(index + 1);
-			party_Info.setActor_Id(member.getId());
+			party_Info.setActor_Id(actor_Id);
 			party_Info_Repository.saveAndFlush(party_Info);
 		}
-  }
+	}
+
+	/**
+	 * 引数のdata_Idを持つパーティー情報を削除
+	 * 
+	 * @param data_Id
+	 */
+	private void release_Party(int data_Id) {
+		List<Party_Info> party_List = party_Info_Repository.list(data_Id);
+		for (Party_Info party_Info : party_List) {
+			party_Info_Repository.delete(party_Info);
+		}
+	}
 
 	public void save(Save_Data data) {
 		int data_Id = Integer.parseInt(data.data_Id);
@@ -469,12 +491,12 @@ public class MapTestService {
 		return center_Image;
   }
 
-	public Actor[] new_Party(int data_Id) {
+	public Actor[] new_Party() {
 		Actor[] party = new Actor[4];
-		party[0] = new Actor(1, data_Id, "戦士", "戦士", 0, 1, 100, 0, 0);
-		party[1] = new Actor(2, data_Id, "勇者", "勇者", 0, 1, 80, 20, 0);
-		party[2] = new Actor(3, data_Id, "僧侶", "僧侶", 0, 1, 60, 30, 0);
-		party[3] = new Actor(4, data_Id, "魔術師", "魔術師", 0, 1, 30, 50, 0);
+		party[0] = new Actor(1, "戦士", "戦士", 0, 1, 100, 0, 0);
+		party[1] = new Actor(2, "勇者", "勇者", 0, 1, 80, 20, 0);
+		party[2] = new Actor(3, "僧侶", "僧侶", 0, 1, 60, 30, 0);
+		party[3] = new Actor(4, "魔術師", "魔術師", 0, 1, 30, 50, 0);
 		return party;
 	}
 
@@ -522,7 +544,6 @@ public class MapTestService {
 
 	public void console_Out(Actor actor) {
 			System.out.println("    id: " + actor.getId());
-			System.out.println("    data_Id: " + actor.getData_Id());
 			System.out.println("    name: " + actor.getActor_Name());
 			System.out.println("    role: " + actor.getRole());
 			System.out.println("    exp: " + actor.getExp());

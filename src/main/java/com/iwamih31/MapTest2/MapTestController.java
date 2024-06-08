@@ -81,7 +81,9 @@ public class MapTestController {
 	public String start2(
 			RedirectAttributes redirectAttributes) {
 				int data_Id = 1;
-				service.save(data_Id, service.new_Party(data_Id), 0, 0, 0);
+				Actor[] party = service.new_Party();
+				service.save(data_Id, party, 0, 0, 0);
+				service.party_Info(data_Id, party);
 		redirectAttributes.addAttribute("data_Id", data_Id);
 		redirectAttributes.addAttribute("data_Key", service.data_Key(data_Id));
 		return redirect("/Map2");
@@ -133,6 +135,7 @@ public class MapTestController {
 		@RequestParam("data_Id") Integer data_Id,
 		@RequestParam("data_Key") String data_Key,
 		Model model) {
+
 			// data_Keyが一致しない場合、トップページに戻る
 			if (!data_Key.equals(service.data_Key(data_Id))) return redirect("/");
 
