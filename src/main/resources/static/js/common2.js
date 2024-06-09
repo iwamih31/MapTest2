@@ -400,11 +400,13 @@ window.addEventListener("load", (e) => {
 				break;
 			case "良い人":
 				path = "Good_Person";
+				comment(['　', key + '画面に遷移します', '　']);
 				event(path);
 				break;
 			case "モンスター":
-				path = "";
+				path = "Good_Person";
 				comment(['　', key + '画面に遷移します', '　']);
+				event(path);
 				return;
 			case "アイテム":
 				path = "";
@@ -426,8 +428,14 @@ window.addEventListener("load", (e) => {
 		alert(data_Id);
 		// セッションに保存された data_Key を取得
 		const data_Key = sessionStorage.getItem('data_Key');
+		console.log(data_Key);
+		// 移動先URL
+		const url = ".." + req + "/" + path + "?data_Id=" + data_Id + "&data_Key=" + data_Key;
+
+		console.log("window.location.href = " + url);
+
 		// 画面遷移（GET）
-		window.location.href = ".." + req + "/" + path + "?data_Id=" + data_Id + "&data_Key=" + data_Key;
+		window.location.href = url;
 
 	}
 

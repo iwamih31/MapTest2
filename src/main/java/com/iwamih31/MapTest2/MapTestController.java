@@ -137,6 +137,7 @@ public class MapTestController {
 		Model model) {
 
 			// data_Keyが一致しない場合、トップページに戻る
+			System.out.println(data_Key);
 			if (!data_Key.equals(service.data_Key(data_Id))) return redirect("/");
 
 			// data_Id を使用して画面へ渡すデータを取得
