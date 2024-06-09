@@ -59,22 +59,7 @@ public class Rest_Controller {
 
 	@PostMapping("/Good_Person")
 	public ResponseEntity<List<String>> good_Person(@RequestBody Save_Data data) {
-		// イベント名指定
-		String event_name = "良い人";
-		// 使用するメッセージをDBに登録
-		service.register_Message(event_name);
-		// 受け取ったデータを処理
-		for (Actor member : data.party) {
-			member.setHp(service.max_HP(member));
-			member.setMp(service.max_MP(member));
-		}
-		// データをコンソールに出力
-		service.console_Out(data);
-		// データベースを更新
-		service.save(data);
-		// レスポンスを返す
-		String data_Key = service.data_Key(Integer.parseInt(data.data_Id));
-		List<String> response_Data = Arrays.asList(data.data_Id, data_Key);
+		List<String> response_Data = service.good_Person(data);
 		return new ResponseEntity<>(response_Data, HttpStatus.OK);
 	}
 

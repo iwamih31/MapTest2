@@ -173,11 +173,13 @@ public class MapTestController {
 		// 画面へ渡すデータを作成
 		String event_name = "良い人";
 		String back_Image = service.back_Image(event_name);
-		List<String> message = service.first_Message();
+		int message_Count = service.message_Count();
+		List<String> message = service.message();
 		Actor[] party = service.party(data_Id);
 		// Actor[] party = service.new_Party(data_Id);
 		// 画面へ渡すデータを model にセット
 		add_View_Data_(model, "event");
+		model.addAttribute("message_Count", message_Count);
 		model.addAttribute("data_Id", data_Id);
 		model.addAttribute("message", message);
 		model.addAttribute("party", party);

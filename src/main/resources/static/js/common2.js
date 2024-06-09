@@ -407,7 +407,7 @@ window.addEventListener("load", (e) => {
 				path = "Good_Person";
 				comment(['　', key + '画面に遷移します', '　']);
 				event(path);
-				return;
+				break;
 			case "アイテム":
 				path = "";
 				comment(['　', key + '画面に遷移します', '　']);
@@ -705,7 +705,12 @@ window.addEventListener("load", (e) => {
 				// alert_Position(event_Data);
 				break;
 			case "○":
+				const count = data.querySelector("#message_count")
+				if (count === null) {
 					search();
+				} else {
+					get_Message(count);
+				}
 				break;
 			case "上":
 			case "下":

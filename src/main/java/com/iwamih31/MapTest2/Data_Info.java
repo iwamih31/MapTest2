@@ -20,7 +20,7 @@ public class Data_Info {
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   private Integer id;
-  // データキー
+   // データキー
   @Column(name = "data_key", nullable = true)
   private String data_Key;
   // マップナンバー

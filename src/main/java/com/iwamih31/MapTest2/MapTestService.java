@@ -1,6 +1,7 @@
 package com.iwamih31.MapTest2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -555,24 +556,33 @@ public class MapTestService {
 
 	public Integer max_HP(Actor actor) {
 		int ap = ap(actor.getRole());
-		return actor.getLev() * ap;
+		return actor.getLev() * ap * 10;
 	}
 
 	public Integer max_MP(Actor actor) {
 		int ep = ep(actor.getRole());
-		return actor.getLev() * ep;
+		return actor.getLev() * ep * 3;
 	}
 
   private int ep(String role_Name) {
-		Role role = role_Repository.role(role_Name);
-		if (role == null) return 1;
+		Role role = role(role_Name);
 		return role.getEp();
 	}
 
 	private int ap(String role_Name) {
-		Role role = role_Repository.role(role_Name);
-		if (role == null) return 1;
+		Role role = role(role_Name);
 		return role.getAp();
+	}
+
+	private Role role(String role_Name) {
+		// TODO Auto-generated method stub
+		switch (role_Name) {
+			case "戦士": return new Role(1, role_Name, 10, 10, 0);
+			case "勇者": return new Role(1, role_Name, 8, 8, 5);
+			case "僧侶": return new Role(1, role_Name, 6, 5, 8);
+			case "魔術師": return new Role(1, role_Name, 3, 1, 10);
+			default: return new Role(1, role_Name, 1, 1, 0);
+		}
 	}
 
 	private int sp(String role_Name) {
@@ -581,9 +591,12 @@ public class MapTestService {
 		return role.getSp();
 	}
 	
-	public void register_Message(String string) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'register_Message'");
+	public void register_Message(ArrayList<String> message_List) {
+		for (String line : message_List) {
+			Message message = new Message();
+			message.setText(line);
+			message_Repository.save(message);
+		}
 	}
 	
   public String back_Image(String event_name) {
@@ -593,15 +606,17 @@ public class MapTestService {
 		}
   }
 	
-	public List<String> message(int count) {
+	public List<String> message() {
 		// 返却用 List を初期化
 		List<String> message = new ArrayList<>();
 		// 表示するメッセージを初期化
 		String full_Message = "----- コメント -----";
-		// count が残っている場合
-		if (0 < count) {
-			// データベースからcount に対応したメッセージを取得
-			full_Message = message_Repository.getReferenceById(count).getText();
+		// データベースから1番目のメッセージデータを取得
+		Message message_Data = message_Repository.findAll().get(0);
+		// メッセージデータが在ればfull_Messageに代入しデータベースから削除
+		if (message_Data != null) {
+			full_Message = message_Data.getText();
+			message_Repository.delete(message_Data);
 		}
 		// 文字数に応じて List にセット
 		int limit_Size = word_Count();
@@ -640,10 +655,36 @@ public class MapTestService {
 		return 70;
 	}
 
-	public List<String> first_Message() {
-		int last_Id = (int) message_Repository.count();
-		List<String> first_Message = message(last_Id);
-		return first_Message;
-	}
+  public List<String> good_Person(Save_Data data) {
+		String hero_Name = "";
+		// 受け取ったデータを処理
+		for (Actor member : data.party) {
+			// ステータス変更
+			member.setHp(max_HP(member));
+			member.setMp(max_MP(member));
+			// 役割が勇者の場合名前を取得
+			if (member.getRole().equals("勇者")) hero_Name = member.getActor_Name();
+		}
+		// メッセージ作成
+		ArrayList<String> message = new ArrayList<>();
+		message.add("「 ・・・!!? 」");
+		message.add(hero_Name + "達は、良い人に出会った♪");
+		message.add("「少し元気をもらった  ↑↑↑」");
+		// 使用するメッセージをDBに登録
+		register_Message(message);
+		// データをコンソールに出力
+		console_Out(data);
+		// データベースを更新
+		save(data);
+		// レスポンスを返す
+		String data_Key = data_Key(Integer.parseInt(data.data_Id));
+		List<String> response_Data = Arrays.asList(data.data_Id, data_Key);
+		return response_Data;
+  }
+
+  public int message_Count() {
+    List<Message> message_Data = message_Repository.findAll();
+		return message_Data.size();
+  }
 
 }
