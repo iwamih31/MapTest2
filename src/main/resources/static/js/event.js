@@ -344,7 +344,7 @@ window.addEventListener("load", (e) => {
 				break;
 			case "○":
 				const count = data.querySelector("#message_count").textContent - 1
-				alert(count);
+				// alert(count);
 				if (0 < count){
 					get_Message(count);
 				} else {
