@@ -605,6 +605,7 @@ public class MapTestService {
   public String back_Image(String event_name) {
     switch (event_name) {
 			case "良い人": return "フィールド";
+			case "モンスター": return "バトル";
 			default: return "エアー";
 		}
   }
@@ -691,18 +692,19 @@ public class MapTestService {
 		return response_Data;
   }
 
-	public List<String> Monster(Save_Data data) {
+	public List<String> monster(Save_Data data) {
 		String hero_Name = "";
-		boolean level_Up = false;
+		ArrayList<String> grower = new ArrayList<>();
 		// 受け取ったデータを処理
 		for (Actor member : data.party) {
 			// ステータス変更
-			member.setHp(member.getHp() / 90);
-			member.setMp(member.getMp() / 90);
-			member.setLev(member.getExp() + 10);
-			if (member.getLev() * (10 +member.getLev()) < member.getExp()) {
+			member.setHp(member.getHp() / 10 * 9);
+			member.setMp(member.getMp() / 10 * 9);
+			member.setExp(member.getExp() + 3);
+			int next_Exp = member.getLev() * (member.getLev() + 20 - ap(member.getRole()));
+			if (next_Exp < member.getExp()) {
 				member.setLev(member.getLev() + 1);
-				level_Up = true;
+				grower.add(member.getActor_Name());
 			}
 			// 役割が勇者の場合名前を取得
 			if (member.getRole().equals("勇者"))
@@ -713,9 +715,11 @@ public class MapTestService {
 		message.add("「 ・・・!!? 」");
 		message.add(hero_Name + "達は、モンスターに出会った‼");
 		message.add(hero_Name + "達は、モンスターを倒した♪");
-		message.add(hero_Name + "達は、モンスターを倒した♪");
-		if (level_Up == true) {
-			message.add(hero_Name + "達は、レベルが上がった‼");
+		message.add(hero_Name + "達は、それぞれ3ポイントの経験値を得た");
+		if (0 < grower.size()) {
+			for (String member_Name : grower) {
+				message.add(member_Name + "は、レベルが上がった‼");
+			}
 		}
 		// 使用するメッセージをDBに登録
 		register_Message(message);

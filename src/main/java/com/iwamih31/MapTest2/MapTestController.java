@@ -192,6 +192,33 @@ public class MapTestController {
 		model.addAttribute("event_Image", event_name);
 		return view;
 	}
+	
+	@GetMapping("/Monster")
+	public String monster(
+			@RequestParam("data_Id") Integer data_Id,
+			@RequestParam("data_Key") String data_Key,
+			Model model) {
+		// data_Keyが一致しない場合、トップページに戻る
+		if (!data_Key.equals(service.data_Key(data_Id)))
+			return redirect("/");
+		// 画面へ渡すデータを作成
+		String back_Image = service.back_Image("モンスター");
+		int message_Count = service.message_Count();
+		List<String> message = service.message();
+		Actor[] party = service.party(data_Id);
+		// 使用する view を設定
+		String view = "event_view";
+		System.out.println("view = " + view);
+		// 画面へ渡すデータを model にセット
+		add_View_Data_(model, "event");
+		model.addAttribute("message_Count", message_Count);
+		model.addAttribute("data_Id", data_Id);
+		model.addAttribute("message", message);
+		model.addAttribute("party", party);
+		model.addAttribute("back_Image", back_Image);
+		model.addAttribute("event_Image", "ドラゴラム");
+		return view;
+	}
 
 	// @PostMapping("/Save")
 	// public Save_Data save(@RequestBody Save_Data data) {

@@ -419,7 +419,6 @@ window.addEventListener("load", (e) => {
 				comment(['　', key + '???', '　']);
 				return;
 		}
-		event(path);
 		setTimeout(() => {
 			comment(['　', key + '画面に遷移します', '　']);
 			// 画面内の data_Id を取得
