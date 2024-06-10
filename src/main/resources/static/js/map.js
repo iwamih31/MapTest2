@@ -385,7 +385,8 @@ window.addEventListener("load", (e) => {
 				console.log('Success:', data);
 				// 結果データの要素[1]（data_Key）を Session に保存
 				sessionStorage.setItem('data_Key', data[1]);
-				alert('Success:data_Id=' + data[0] + ', data_Key=' + data[1]);
+				console.log('Success:data_Id=' + data[0] + ', data_Key=' + data[1]); // 削除する
+				// alert('Success:data_Id=' + data[0] + ', data_Key=' + data[1]);
 			})
 			.catch((error) => {
 				console.error('Error:', error);
@@ -425,7 +426,7 @@ window.addEventListener("load", (e) => {
 		}, 1500);
 		// 画面内の data_Id を取得
 		const data_Id = document.querySelector("#data_id").textContent;
-		alert(data_Id);
+		alert("data_Id = " + data_Id);
 		// セッションに保存された data_Key を取得
 		const data_Key = sessionStorage.getItem('data_Key');
 		console.log(data_Key);
