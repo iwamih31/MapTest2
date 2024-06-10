@@ -693,6 +693,7 @@ public class MapTestService {
 
 	public List<String> Monster(Save_Data data) {
 		String hero_Name = "";
+		boolean level_Up = false;
 		// 受け取ったデータを処理
 		for (Actor member : data.party) {
 			// ステータス変更
@@ -701,6 +702,7 @@ public class MapTestService {
 			member.setLev(member.getExp() + 10);
 			if (member.getLev() * (10 +member.getLev()) < member.getExp()) {
 				member.setLev(member.getLev() + 1);
+				level_Up = true;
 			}
 			// 役割が勇者の場合名前を取得
 			if (member.getRole().equals("勇者"))
@@ -712,7 +714,9 @@ public class MapTestService {
 		message.add(hero_Name + "達は、モンスターに出会った‼");
 		message.add(hero_Name + "達は、モンスターを倒した♪");
 		message.add(hero_Name + "達は、モンスターを倒した♪");
-		message.add(hero_Name + "達は、レベルが上がった‼");
+		if (level_Up == true) {
+			message.add(hero_Name + "達は、レベルが上がった‼");
+		}
 		// 使用するメッセージをDBに登録
 		register_Message(message);
 		// データをコンソールに出力
