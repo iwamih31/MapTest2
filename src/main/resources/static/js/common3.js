@@ -136,7 +136,7 @@ window.addEventListener("load", (e) => {
 	// 		party.appendChild(member);
 	// 	});
 	// };
-
+	
 	const transition = (key) => {
 		let path = "";
 		switch (key) {
@@ -285,6 +285,28 @@ window.addEventListener("load", (e) => {
 		comment(["　", "　", "　"]);
 	}
 
+	const action = (mode) => {
+		// カーソル移動
+		if (mode === "上") cursor_Up();
+		if (mode === "下") cursor_Down();
+		if (mode === "左") cursor_Left();
+		if (mode === "右") cursor_right();
+	};
+
+	const mode_Change = (destination) => {
+		if (destination !== mode) {
+			mode = destination;
+			console.log("移動先 = " + mode);
+		}
+	}
+
+	const message_Count = (difference) => {
+		const message_count = data.querySelector("#message_count");
+		const new_Count = Number(message_count.textContent) + difference;
+		message_count.textContent = new_Count;
+		console.log("new_Count = " + new_Count);
+	}
+
 	const get_Message = (count) => {
 		const url = ".." + req + "/Message";
 		const send_Data = [
@@ -304,26 +326,11 @@ window.addEventListener("load", (e) => {
 				// alert('Success:'+ data);
 				// 結果データを コメント欄に表示
 				comment(data);
-
+				message_Count(-1);
 			})
 			.catch((error) => {
 				console.error('Error:', error);
 			});
-	}
-
-	const action = (mode) => {
-		// カーソル移動
-		if (mode === "上") cursor_Up();
-		if (mode === "下") cursor_Down();
-		if (mode === "左") cursor_Left();
-		if (mode === "右") cursor_right();
-	};
-
-	const mode_Change = (destination) => {
-		if (destination !== mode) {
-			mode = destination;
-			console.log("移動先 = " + mode);
-		}
 	}
 
 	const button = (button_Name, event_Data) => {
@@ -336,10 +343,10 @@ window.addEventListener("load", (e) => {
 				// alert_Position(event_Data);
 				break;
 			case "○":
-				const count = document.querySelector("#count").textContent;
-				if (count){
+				const count = data.querySelector("#message_count").textContent - 1
+				alert(count);
+				if (0 < count){
 					get_Message(count);
-					count--;
 				} else {
 					transition("次マップ");
 				}

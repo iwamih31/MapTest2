@@ -670,30 +670,6 @@ window.addEventListener("load", (e) => {
 		}
 	}
 
-	const get_Message = (count) => {
-		const url = ".." + req + "/Message";
-		const send_Data = {
-			data_Id: document.querySelector("#data_id").textContent,
-			count: count
-		};
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(send_Data),
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				console.log('Success:', data);
-				// alert('Success:'+ data);
-				// 結果データを コメント欄に表示
-				comment(data);
-			})
-			.catch((error) => {
-				console.error('Error:', error);
-			});
-	}
 
 	const button = (button_Name, event_Data) => {
 		switch (button_Name) {
@@ -705,12 +681,7 @@ window.addEventListener("load", (e) => {
 				// alert_Position(event_Data);
 				break;
 			case "○":
-				const count = data.querySelector("#message_count")
-				if (count === null) {
 					search();
-				} else {
-					get_Message(count);
-				}
 				break;
 			case "上":
 			case "下":
@@ -789,10 +760,11 @@ window.addEventListener("load", (e) => {
 
 
 
+
 const n3 = document.getElementsByClassName('num3');
-for (var i = 0; n3.length; i++){
+for (var i = 0; n3.length; i++) {
 	let p = n3[i].textContent.replace('\xA5', '');
-	if(isFinite(p)){
-		n3[i].innerHTML = Number(p).toLocaleString('ja-JP', {"style":"currency", "currency":"JPY"});
+	if (isFinite(p)) {
+		n3[i].innerHTML = Number(p).toLocaleString('ja-JP', { "style": "currency", "currency": "JPY" });
 	}
 };

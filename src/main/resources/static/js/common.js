@@ -65,7 +65,7 @@ window.addEventListener("load", (e) => {
 		left.classList.remove("click_button");
 		right.classList.remove("click_button");
 	}
-	
+
 	const action = (mode) => {
 		map_rows = document.querySelectorAll(".map_row");
 		if (mode === "上") map_Up();
@@ -116,8 +116,8 @@ window.addEventListener("load", (e) => {
 			case "A":
 			case "B":
 			case "C":
-				case "D":
-				case "○":
+			case "D":
+			case "○":
 				alert(button_Name + "ボタンが押されました");
 				alert_Position(event_Data);
 				break;
@@ -129,7 +129,7 @@ window.addEventListener("load", (e) => {
 				break;
 			default:
 				break;
-			
+
 		}
 		console.log(button_Name + "ボタンが押されました");
 		console.log(position(event_Data));
@@ -166,7 +166,7 @@ window.addEventListener("load", (e) => {
 	down.addEventListener("mouseover", (e) => { button("下", e); });
 	left.addEventListener("mouseover", (e) => { button("左", e); });
 	right.addEventListener("mouseover", (e) => { button("右", e); });
-	
+
 	const walk = () => {
 		up.addEventListener("mouseout", () => { move("○"); });
 		down.addEventListener("mouseout", () => { move("○"); });
@@ -200,11 +200,11 @@ window.addEventListener("load", (e) => {
 	// });
 
 
-			
+
 	window.addEventListener("keydown", (e) => {
 		// alert(e.key + " キーが押されました");
 		console.log(e.key + " キーが押されました");
-		switch (e.key){
+		switch (e.key) {
 			case "ArrowUp"   : move("上"); break;
 			case "ArrowDown" : move("下"); break;
 			case "ArrowLeft" : move("左"); break;
@@ -216,15 +216,20 @@ window.addEventListener("load", (e) => {
 	// 	walk();
 	// }
 	map_View_Range(row_Size, column_Size);
-	
+
 });
 
 
-
 const n3 = document.getElementsByClassName('num3');
-for (var i = 0; n3.length; i++){
+for (var i = 0; n3.length; i++) {
 	let p = n3[i].textContent.replace('\xA5', '');
-	if(isFinite(p)){
-		n3[i].innerHTML = Number(p).toLocaleString('ja-JP', {"style":"currency", "currency":"JPY"});
+	if (isFinite(p)) {
+		n3[i].innerHTML = Number(p).toLocaleString(
+			'ja-JP',
+			{
+				"style": "currency",
+				"currency": "JPY"
+			}
+		);
 	}
 };

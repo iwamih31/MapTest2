@@ -31,13 +31,6 @@
 	<!-- メインコンテンツの埋め込み場所 -->
 	<div id="main" th:insert="~{__${main}__}"></div>
 
-	<!-- フッター -->
-	<div id="footer">
-		<hr>
-		<a th:href="@{${req} + '/'}">
-			<img src="/image/logo.png" title="ロゴ"  class="padding_s">
-		</a>
-	</div>
 	<!-- 共通の javascript 読込 -->
 	<script type="text/javascript" th:src="@{/js/common2.js}"></script>
 </body>

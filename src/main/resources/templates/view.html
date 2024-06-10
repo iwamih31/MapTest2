@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 
 	<!-- ページタイトルの反映場所 -->
-	<title>マップ</title>
+	<title>マップテスト</title>
 
 	<!-- 共通の CSS 読込	-->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -31,13 +31,6 @@
 	<!-- メインコンテンツの埋め込み場所 -->
 	<div id="main" th:insert="~{__${main}__}"></div>
 
-	<!-- フッター -->
-	<div id="footer">
-		<hr>
-		<a th:href="@{${req} + '/'}">
-			<img src="/image/logo.png" title="ロゴ"  class="padding_s">
-		</a>
-	</div>
 	<!-- 共通の javascript 読込 -->
 	<script type="text/javascript" th:src="@{/js/common.js}"></script>
 </body>

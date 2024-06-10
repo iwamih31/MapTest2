@@ -592,6 +592,9 @@ public class MapTestService {
 	}
 	
 	public void register_Message(ArrayList<String> message_List) {
+		// 古いメッセージデータが残っていたら削除
+		message_Repository.deleteAll();
+		// 新しいメッセージデータを登録
 		for (String line : message_List) {
 			Message message = new Message();
 			message.setText(line);
@@ -606,16 +609,21 @@ public class MapTestService {
 		}
   }
 	
+	/**
+	 * データベースから表示するメッセージを取得し、表示用リストにして返す
+	 * @return 
+	 */
 	public List<String> message() {
 		// 返却用 List を初期化
 		List<String> message = new ArrayList<>();
 		// 表示するメッセージを初期化
 		String full_Message = "----- コメント -----";
-		// データベースから1番目のメッセージデータを取得
-		Message message_Data = message_Repository.findAll().get(0);
 		// メッセージデータが在ればfull_Messageに代入しデータベースから削除
-		if (message_Data != null) {
+		if (message_Repository.findAll() != null) {
+			// データベースから1番目のメッセージデータを取得
+			Message message_Data = message_Repository.findAll().get(0);
 			full_Message = message_Data.getText();
+			// データベースから削除
 			message_Repository.delete(message_Data);
 		}
 		// 文字数に応じて List にセット

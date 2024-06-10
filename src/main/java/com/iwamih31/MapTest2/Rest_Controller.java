@@ -71,10 +71,10 @@ public class Rest_Controller {
 		// データをコンソールに出力
 		System.out.println("Received data_Id: " + data_Id);
 		System.out.println("Received count: " + count);
-		// データベースからメッセージのリストを取得
-		List<String> response_Data = service.message(count);
+		// データベースから表示するメッセージのリストを取得
+		List<String> message_List = service.message();
 		// レスポンスを返す
-		return new ResponseEntity<>(response_Data, HttpStatus.OK);
+		return new ResponseEntity<>(message_List, HttpStatus.OK);
 	}
 
 }

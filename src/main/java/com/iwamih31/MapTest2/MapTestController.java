@@ -139,7 +139,6 @@ public class MapTestController {
 			// data_Keyが一致しない場合、トップページに戻る
 			System.out.println(data_Key);
 			if (!data_Key.equals(service.data_Key(data_Id))) return redirect("/");
-
 			// data_Id を使用して画面へ渡すデータを取得
 			Actor[] party = service.party(data_Id);
 			// Actor[] party = service.new_Party(data_Id);
@@ -151,6 +150,10 @@ public class MapTestController {
 			int[][] map = service.getOriginalMap(map_Number);
 			String center_Image = service.center_Image(data_Id);
 			String[] map_Image_Names = service.map_Image_Names(map_Number);
+			// 使用する view を設定
+			String view = "map_view";
+			System.out.println("view = " + view);
+			// 画面へ渡すデータを model にセット
 			add_View_Data_(model, "map2");
 			model.addAttribute("data_Id", data_Id);
 			model.addAttribute("party", party);
@@ -160,7 +163,7 @@ public class MapTestController {
 			model.addAttribute("y", y);
 			model.addAttribute("center_Image", center_Image);
 			model.addAttribute("map_Image_Names", map_Image_Names);
-		return "view2";
+		return view;
 	}
 
 	@GetMapping("/Good_Person")
@@ -176,7 +179,9 @@ public class MapTestController {
 		int message_Count = service.message_Count();
 		List<String> message = service.message();
 		Actor[] party = service.party(data_Id);
-		// Actor[] party = service.new_Party(data_Id);
+		// 使用する view を設定
+		String view = "event_view";
+		System.out.println("view = " + view);
 		// 画面へ渡すデータを model にセット
 		add_View_Data_(model, "event");
 		model.addAttribute("message_Count", message_Count);
@@ -185,7 +190,7 @@ public class MapTestController {
 		model.addAttribute("party", party);
 		model.addAttribute("back_Image", back_Image);
 		model.addAttribute("event_Image", event_name);
-		return "view3";
+		return view;
 	}
 
 	// @PostMapping("/Save")
