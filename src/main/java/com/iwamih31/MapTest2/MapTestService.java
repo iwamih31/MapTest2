@@ -691,6 +691,40 @@ public class MapTestService {
 		return response_Data;
   }
 
+	public List<String> Monster(Save_Data data) {
+		String hero_Name = "";
+		// 受け取ったデータを処理
+		for (Actor member : data.party) {
+			// ステータス変更
+			member.setHp(member.getHp() / 90);
+			member.setMp(member.getMp() / 90);
+			member.setLev(member.getExp() + 10);
+			if (member.getLev() * (10 +member.getLev()) < member.getExp()) {
+				member.setLev(member.getLev() + 1);
+			}
+			// 役割が勇者の場合名前を取得
+			if (member.getRole().equals("勇者"))
+				hero_Name = member.getActor_Name();
+		}
+		// メッセージ作成
+		ArrayList<String> message = new ArrayList<>();
+		message.add("「 ・・・!!? 」");
+		message.add(hero_Name + "達は、モンスターに出会った‼");
+		message.add(hero_Name + "達は、モンスターを倒した♪");
+		message.add(hero_Name + "達は、モンスターを倒した♪");
+		message.add(hero_Name + "達は、レベルが上がった‼");
+		// 使用するメッセージをDBに登録
+		register_Message(message);
+		// データをコンソールに出力
+		console_Out(data);
+		// データベースを更新
+		save(data);
+		// レスポンスを返す
+		String data_Key = data_Key(Integer.parseInt(data.data_Id));
+		List<String> response_Data = Arrays.asList(data.data_Id, data_Key);
+		return response_Data;
+	}
+
   public int message_Count() {
     List<Message> message_Data = message_Repository.findAll();
 		return message_Data.size();

@@ -63,6 +63,12 @@ public class Rest_Controller {
 		return new ResponseEntity<>(response_Data, HttpStatus.OK);
 	}
 
+	@PostMapping("/Monster")
+	public ResponseEntity<List<String>> monster(@RequestBody Save_Data data) {
+		List<String> response_Data = service.monster(data);
+		return new ResponseEntity<>(response_Data, HttpStatus.OK);
+	}
+
 	@PostMapping("/Message")
 	public ResponseEntity<List<String>> message(@RequestBody int[] data) {
 		// 受け取ったデータを処理
