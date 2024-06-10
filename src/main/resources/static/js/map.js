@@ -426,7 +426,7 @@ window.addEventListener("load", (e) => {
 		}, 1500);
 		// 画面内の data_Id を取得
 		const data_Id = document.querySelector("#data_id").textContent;
-		alert("data_Id = " + data_Id);
+		// alert("data_Id = " + data_Id);
 		// セッションに保存された data_Key を取得
 		const data_Key = sessionStorage.getItem('data_Key');
 		console.log(data_Key);
