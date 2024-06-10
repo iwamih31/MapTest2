@@ -492,7 +492,7 @@ window.addEventListener("load", (e) => {
 			const wp = member.querySelector('.member_wp').textContent;
 			member_Array.push({ id: id, actor_Name: actor_Name, role: role, exp: exp, lev: lev, hp: hp, mp: mp, wp: wp });
 			});
-		alert("member_Array.length = " + member_Array.length);
+		// alert("member_Array.length = " + member_Array.length);
 		return member_Array;
 	}
 
