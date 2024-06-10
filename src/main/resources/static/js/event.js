@@ -323,7 +323,6 @@ window.addEventListener("load", (e) => {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log('Success:', data);
-				// alert('Success:'+ data);
 				// 結果データを コメント欄に表示
 				comment(data);
 				message_Count(-1);

@@ -626,6 +626,7 @@ public class MapTestService {
 			// データベースから削除
 			message_Repository.delete(message_Data);
 		}
+		System.out.println(full_Message);
 		// 文字数に応じて List にセット
 		int limit_Size = word_Count();
 		int message_Size = full_Message.length();
